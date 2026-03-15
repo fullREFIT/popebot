@@ -1,0 +1,215 @@
+diff --git a/node_modules/thepopebot/api/index.js b/node_modules/thepopebot/api/index.js
+index 9e95224..316b0c5 100644
+--- a/node_modules/thepopebot/api/index.js
++++ b/node_modules/thepopebot/api/index.js
+@@ -133,19 +133,24 @@ async function handleTelegramWebhook(request) {
+  * Message persistence is handled centrally by the AI layer.
+  */
+ async function processChannelMessage(adapter, normalized) {
++  console.log('[process-debug] Starting message processing for:', normalized.text?.slice(0, 50));
+   await adapter.acknowledge(normalized.metadata);
+   const stopIndicator = adapter.startProcessingIndicator(normalized.metadata);
+ 
+   try {
++    console.log('[process-debug] Calling chat()...');
+     const response = await chat(
+       normalized.threadId,
+       normalized.text,
+       normalized.attachments,
+       { userId: 'telegram', chatTitle: 'Telegram' }
+     );
++    console.log('[process-debug] chat() returned:', response?.slice(0, 100));
++    console.log('[process-debug] Calling sendResponse to thread:', normalized.threadId);
+     await adapter.sendResponse(normalized.threadId, response, normalized.metadata);
++    console.log('[process-debug] sendResponse completed successfully');
+   } catch (err) {
+-    console.error('Failed to process message with AI:', err);
++    console.error('[process-debug] ERROR in processChannelMessage:', err);
+     await adapter
+       .sendResponse(
+         normalized.threadId,
+diff --git a/node_modules/thepopebot/lib/ai/index.js b/node_modules/thepopebot/lib/ai/index.js
+index 9db10a3..bbb1332 100644
+--- a/node_modules/thepopebot/lib/ai/index.js
++++ b/node_modules/thepopebot/lib/ai/index.js
+@@ -57,8 +57,43 @@ async function chat(threadId, message, attachments = [], options = {}) {
+           url: `data:${att.mimeType};base64,${att.data.toString('base64')}`,
+         },
+       });
++    } else if (att.category === 'document') {
++      // Text-based documents (markdown, plain text, JSON, etc.) — decode and inline as text
++      const fileName = att.filename || 'document';
++      const isTextType = att.mimeType && (
++        att.mimeType.startsWith('text/') ||
++        att.mimeType === 'application/json' ||
++        att.mimeType === 'application/xml'
++      );
++      if (!isTextType) {
++        content.push({
++          type: 'text',
++          text: `\n\n[Attached binary file: ${fileName} (${att.mimeType || 'unknown type'}) — cannot display inline]`,
++        });
++      } else {
++        try {
++          const textContent = att.data.toString('utf-8');
++          // Detect binary content that was mislabeled as text
++          if (textContent.includes('\x00')) {
++            content.push({
++              type: 'text',
++              text: `\n\n[Attached file: ${fileName} — contains binary data, cannot display inline]`,
++            });
++          } else {
++            content.push({
++              type: 'text',
++              text: `\n\nAttached file: ${fileName}\n\`\`\`\n${textContent}\n\`\`\``,
++            });
++          }
++        } catch (e) {
++          console.error(`Failed to decode document attachment ${fileName}:`, e);
++          content.push({
++            type: 'text',
++            text: `\n\n[Attached file: ${fileName} — failed to decode: ${e.message}]`,
++          });
++        }
++      }
+     }
+-    // Documents: future handling
+   }
+ 
+   // If only text and no attachments, simplify to a string
+@@ -166,6 +201,43 @@ async function* chatStream(threadId, message, attachments = [], options = {}) {
+         type: 'image_url',
+         image_url: { url },
+       });
++    } else if (att.category === 'document') {
++      // Text-based documents — inline content as text
++      const fileName = att.name || att.filename || 'document';
++      const mimeType = att.mimeType || '';
++      const isTextType = mimeType.startsWith('text/') || mimeType === 'application/json' || mimeType === 'application/xml';
++
++      if (att.dataUrl) {
++        try {
++          const base64Data = att.dataUrl.split(',')[1];
++          if (!base64Data) throw new Error('Invalid data URL format');
++          const textContent = Buffer.from(base64Data, 'base64').toString('utf-8');
++          if (textContent.includes('\x00')) {
++            content.push({ type: 'text', text: `\n\n[Attached file: ${fileName} — contains binary data, cannot display inline]` });
++          } else {
++            content.push({ type: 'text', text: `\n\nAttached file: ${fileName}\n\`\`\`\n${textContent}\n\`\`\`` });
++          }
++        } catch (e) {
++          console.error(`Failed to decode document attachment ${fileName}:`, e);
++          content.push({ type: 'text', text: `\n\n[Attached file: ${fileName} — failed to decode: ${e.message}]` });
++        }
++      } else if (att.data) {
++        if (!isTextType) {
++          content.push({ type: 'text', text: `\n\n[Attached binary file: ${fileName} (${mimeType || 'unknown type'}) — cannot display inline]` });
++        } else {
++          try {
++            const textContent = att.data.toString('utf-8');
++            if (textContent.includes('\x00')) {
++              content.push({ type: 'text', text: `\n\n[Attached file: ${fileName} — contains binary data, cannot display inline]` });
++            } else {
++              content.push({ type: 'text', text: `\n\nAttached file: ${fileName}\n\`\`\`\n${textContent}\n\`\`\`` });
++            }
++          } catch (e) {
++            console.error(`Failed to decode document attachment ${fileName}:`, e);
++            content.push({ type: 'text', text: `\n\n[Attached file: ${fileName} — failed to decode: ${e.message}]` });
++          }
++        }
++      }
+     }
+   }
+ 
+diff --git a/node_modules/thepopebot/lib/channels/telegram.js b/node_modules/thepopebot/lib/channels/telegram.js
+index 6102f79..b82bab4 100644
+--- a/node_modules/thepopebot/lib/channels/telegram.js
++++ b/node_modules/thepopebot/lib/channels/telegram.js
+@@ -27,7 +27,9 @@ class TelegramAdapter extends ChannelAdapter {
+       return null;
+     }
+     const headerSecret = request.headers.get('x-telegram-bot-api-secret-token');
++    console.log('[telegram-debug] secret check:', JSON.stringify({ headerSecret, expected: TELEGRAM_WEBHOOK_SECRET, match: headerSecret === TELEGRAM_WEBHOOK_SECRET }));
+     if (headerSecret !== TELEGRAM_WEBHOOK_SECRET) {
++      console.log('[telegram-debug] REJECTED: secret mismatch');
+       return null;
+     }
+ 
+@@ -47,10 +49,11 @@ class TelegramAdapter extends ChannelAdapter {
+     }
+ 
+     // Security: if no TELEGRAM_CHAT_ID configured, ignore all messages
+-    if (!TELEGRAM_CHAT_ID) return null;
++    if (!TELEGRAM_CHAT_ID) { console.log('[telegram-debug] REJECTED: no TELEGRAM_CHAT_ID'); return null; }
+ 
+     // Security: only accept messages from configured chat
+-    if (chatId !== TELEGRAM_CHAT_ID) return null;
++    console.log('[telegram-debug] chat ID check:', JSON.stringify({ chatId, expected: TELEGRAM_CHAT_ID, match: chatId === TELEGRAM_CHAT_ID }));
++    if (chatId !== TELEGRAM_CHAT_ID) { console.log('[telegram-debug] REJECTED: chat ID mismatch'); return null; }
+ 
+     // Voice messages → transcribe to text
+     if (message.voice) {
+@@ -110,7 +113,7 @@ class TelegramAdapter extends ChannelAdapter {
+       try {
+         const { buffer, filename } = await downloadFile(this.botToken, message.document.file_id);
+         const mimeType = message.document.mime_type || 'application/octet-stream';
+-        attachments.push({ category: 'document', mimeType, data: buffer });
++        attachments.push({ category: 'document', mimeType, data: buffer, filename: message.document.file_name || filename });
+         if (!text && message.caption) text = message.caption;
+       } catch (err) {
+         console.error('Failed to download document:', err);
+diff --git a/node_modules/thepopebot/lib/chat/api.js b/node_modules/thepopebot/lib/chat/api.js
+index ba05627..8cadc00 100644
+--- a/node_modules/thepopebot/lib/chat/api.js
++++ b/node_modules/thepopebot/lib/chat/api.js
+@@ -42,9 +42,26 @@ export async function POST(request) {
+     const { mediaType, url } = part;
+     if (!mediaType || !url) continue;
+ 
+-    if (mediaType.startsWith('image/') || mediaType === 'application/pdf') {
+-      // Images and PDFs → pass as visual attachments for the LLM
++    if (mediaType.startsWith('image/')) {
++      // Images only → pass as visual attachments for the LLM
+       attachments.push({ category: 'image', mimeType: mediaType, dataUrl: url });
++    } else if (mediaType === 'application/pdf') {
++      // PDFs → decode and inline as text (Anthropic API rejects non-image media types in image_url)
++      const fileName = part.name || 'document.pdf';
++      try {
++        const base64Data = url.split(',')[1];
++        if (!base64Data) throw new Error('Invalid data URL format');
++        const rawContent = Buffer.from(base64Data, 'base64').toString('utf-8');
++        // PDF binary content won't decode to useful UTF-8 text — check for PDF header
++        if (rawContent.startsWith('%PDF')) {
++          userText += `\n\n[Attached PDF: ${fileName} — PDF binary files cannot be read as text in this interface. Please copy/paste the text content instead, or use a job to process the file.]`;
++        } else {
++          userText += `\n\nFile: ${fileName}\n\`\`\`\n${rawContent}\n\`\`\``;
++        }
++      } catch (e) {
++        console.error(`Failed to decode PDF file ${fileName}:`, e);
++        userText += `\n\n[Attached PDF: ${fileName} — failed to process: ${e.message}]`;
++      }
+     } else if (mediaType.startsWith('text/') || mediaType === 'application/json') {
+       // Text files → decode base64 data URL and inline into message text
+       try {
+diff --git a/node_modules/thepopebot/lib/tools/telegram.js b/node_modules/thepopebot/lib/tools/telegram.js
+index fc16a3b..d8cdbde 100644
+--- a/node_modules/thepopebot/lib/tools/telegram.js
++++ b/node_modules/thepopebot/lib/tools/telegram.js
+@@ -81,6 +81,7 @@ let currentToken = null;
+  */
+ function getBot(token) {
+   if (!bot || currentToken !== token) {
++    console.log('[getBot-debug] Creating new Bot with token:', token?.slice(0, 15), new Error().stack?.split('\n').slice(1, 4).join(' <- '));
+     bot = new Bot(token);
+     bot.use(hydrateReply);
+     currentToken = token;
+@@ -168,7 +169,9 @@ function escapeHtml(text) {
+  * @returns {Promise<Object>} - Last message sent
+  */
+ async function sendMessage(botToken, chatId, text, options = {}) {
++  console.log('[sendMessage-debug] botToken starts with:', botToken?.slice(0, 15), 'chatId:', chatId);
+   const b = getBot(botToken);
++  console.log('[sendMessage-debug] currentToken starts with:', currentToken?.slice(0, 15));
+   text = markdownToTelegramHtml(text);
+   // Strip HTML comments — Telegram's HTML parser doesn't support them
+   text = text.replace(/<!--[\s\S]*?-->/g, '');

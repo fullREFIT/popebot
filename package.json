@@ -7,7 +7,8 @@
     "start": "next start",
     "setup": "thepopebot setup",
     "setup-telegram": "thepopebot setup-telegram",
-    "reset-auth": "thepopebot reset-auth"
+    "reset-auth": "thepopebot reset-auth",
+    "postinstall": "npx patch-package"
   },
   "dependencies": {
     "thepopebot": "^1.0.0",

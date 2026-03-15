@@ -9,6 +9,10 @@ cd "$(dirname "$0")"
 
 echo "Starting PopeBot..."
 
+# Override any shell-level TELEGRAM_BOT_TOKEN (e.g. from mcp.env)
+# to ensure PopeBot uses its own token from .env
+export TELEGRAM_BOT_TOKEN=8434863540:AAE-EtgROLzN5To6HF6eA-AVXdNjwt6_eII
+
 # Kill existing processes
 lsof -ti:3000 | xargs kill -9 2>/dev/null || true
 pkill -f "cloudflared tunnel" 2>/dev/null || true
