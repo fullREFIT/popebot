@@ -1,4 +1,0 @@
-{
-  "title": "Create Telegram messaging skill and send test message",
-  "job": "Create a Telegram messaging skill and send a test message to PaulsPopeBot:\n\n1. Create `skills/telegram/SKILL.md` with frontmatter (name: telegram, description: \"Send messages to Telegram chats via Bot API\") and usage documentation\n2. Create `skills/telegram/send.sh` - bash script that:\n   - Takes message text as argument and optional chat_id\n   - Uses curl to send via Telegram Bot API using $TELEGRAM_BOT_TOKEN\n   - If TELEGRAM_BOT_TOKEN is not set, show clear error message with setup instructions\n   - Make it executable\n3. Activate: `ln -s ../telegram skills/active/telegram`\n4. Attempt to send \"debug test\" to PaulsPopeBot\n5. If the bot token isn't available, create the skill structure and document what's needed for setup"
-}
