@@ -1,5 +1,150 @@
-/* Override any CSS variable to customize your theme.
-   Example:
-   :root { --primary: #2563eb; }
-   .dark { --primary: #60a5fa; }
-*/
+/* ═══════════════════════════════════════════════════════════════════
+   Carbon Forge Theme — full/REFIT Brand Identity
+   Systems built. Teams equipped.
+   ═══════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+/* ── Light Mode ─────────────────────────────────────────────────── */
+:root {
+  --background: #F2F0EE;           /* Ash White — page canvas */
+  --foreground: #121010;           /* Carbon Core — text */
+  --primary: #D43B2A;              /* Forge Red — CTAs, action */
+  --primary-foreground: #FFFFFF;   /* Pure White — text on primary */
+  --muted: #E5E3E0;               /* Soft Gray — muted surfaces */
+  --muted-foreground: #878E88;    /* Echo — secondary text */
+  --border: #E5E3E0;              /* Soft Gray — borders */
+  --input: #FFFFFF;               /* Pure White — input backgrounds */
+  --ring: #D43B2A;                /* Forge Red — focus rings */
+  --destructive: #D43B2A;         /* Forge Red — destructive actions */
+}
+
+/* ── Dark Mode ──────────────────────────────────────────────────── */
+.dark {
+  --background: #121010;           /* Carbon Core — deepest dark */
+  --foreground: #F2F0EE;          /* Ash White — text on dark */
+  --primary: #D43B2A;              /* Forge Red — CTAs, action */
+  --primary-foreground: #FFFFFF;   /* Pure White — text on primary */
+  --muted: #333130;               /* Forge Dark — muted surfaces */
+  --muted-foreground: #878E88;    /* Echo — secondary text */
+  --border: #333130;              /* Forge Dark — borders */
+  --input: #333130;               /* Forge Dark — input backgrounds */
+  --ring: #D43B2A;                /* Forge Red — focus rings */
+  --destructive: #D43B2A;         /* Forge Red — destructive actions */
+}
+
+/* ── Typography ─────────────────────────────────────────────────── */
+@theme inline {
+  --font-sans: 'Outfit', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace;
+}
+
+/* Headings: Outfit Bold, tight tracking */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Outfit', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Body text: comfortable line height */
+body {
+  font-family: 'Outfit', system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+/* Monospace elements: JetBrains Mono */
+code, pre, kbd, samp,
+[data-streamdown="code-block-body"],
+[data-streamdown="code-inline"] {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* ── Accent Colors (Gold highlights on interactive elements) ──── */
+
+/* Primary buttons: Forge Red with warm hover */
+button[class*="bg-primary"],
+[role="button"][class*="bg-primary"] {
+  transition: background-color 0.15s ease;
+}
+
+button[class*="bg-primary"]:hover,
+[role="button"][class*="bg-primary"]:hover {
+  background-color: #b8301f;
+}
+
+/* Links: Forge Red */
+a {
+  color: #D43B2A;
+}
+
+a:hover {
+  color: #b8301f;
+}
+
+/* ── Chat Interface ─────────────────────────────────────────────── */
+
+/* Chat input area: subtle warm border */
+textarea, input[type="text"], input[type="email"], input[type="password"] {
+  border-color: var(--border);
+  transition: border-color 0.15s ease;
+}
+
+textarea:focus, input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+  border-color: #D43B2A;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(212, 59, 42, 0.15);
+}
+
+/* ── Sidebar / Navigation ───────────────────────────────────────── */
+
+/* Active nav item: Forge Red accent */
+nav a[aria-current="page"],
+nav a.active {
+  color: #D43B2A;
+  border-color: #D43B2A;
+}
+
+/* ── Cards and Surfaces ─────────────────────────────────────────── */
+
+/* Cards: subtle warm border radius */
+[class*="rounded-lg"],
+[class*="rounded-xl"] {
+  border-color: var(--border);
+}
+
+/* ── Scrollbar: warm-toned ──────────────────────────────────────── */
+.scrollbar-thin {
+  scrollbar-color: #878E88 transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: #878E88;
+}
+
+/* ── Code Blocks: Carbon Core background ────────────────────────── */
+.dark [data-streamdown="code-block"] {
+  background-color: #1a1818;
+}
+
+[data-streamdown="code-block"] {
+  border-radius: 0.5rem;
+}
+
+/* ── Selection: Forge Red tint ──────────────────────────────────── */
+::selection {
+  background-color: rgba(212, 59, 42, 0.2);
+  color: inherit;
+}
+
+/* ── Gold Accent Utility (for future customization) ─────────────── */
+.accent-gold {
+  color: #FFB400;
+}
+
+.border-gold {
+  border-color: #FFB400;
+}
+
+.bg-gold {
+  background-color: #FFB400;
+}
