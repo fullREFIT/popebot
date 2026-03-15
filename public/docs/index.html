@@ -1,1 +1,1747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PopeBot — Complete User Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --burnt-orange:#cc5833;
+  --dark-gray:#1a1a1a;
+  --off-white:#f2f0e9;
+  --forest-green:#2e4036;
+  --bg:#f2f0e9;
+  --bg-card:#ffffff;
+  --bg-code:#1a1a1a;
+  --bg-code-inline:rgba(26,26,26,0.06);
+  --text:#1a1a1a;
+  --text-muted:rgba(26,26,26,0.55);
+  --text-on-dark:#f2f0e9;
+  --border:rgba(26,26,26,0.1);
+  --border-med:rgba(26,26,26,0.15);
+  --orange-glow:rgba(204,88,51,0.1);
+  --green-glow:rgba(46,64,54,0.08);
+  --shadow-soft:0 8px 32px rgba(26,26,26,0.08);
+  --shadow-lift:0 16px 48px rgba(26,26,26,0.12);
+  --sidebar-w:280px;
+  --header-h:64px;
+  --font-sans:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  --active-accent:#4a8a6e;
+  --review-accent:#d4a574;
+  --blocked-accent:#c45d2c;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-sans);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.65;
+  font-size:15px;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--burnt-orange);text-decoration:none;transition:color 0.15s}
+a:hover{color:#a3442a}
+::selection{background:var(--orange-glow);color:var(--dark-gray)}
 
+/* ── HEADER ── */
+.site-header{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:var(--header-h);
+  background:var(--dark-gray);
+  display:flex;align-items:center;
+  padding:0 24px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  backdrop-filter:blur(12px);
+}
+.header-inner{
+  width:100%;max-width:1600px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{display:flex;align-items:center;gap:12px}
+.brand svg{flex-shrink:0}
+.brand-text{
+  font-size:18px;font-weight:700;color:var(--off-white);
+  letter-spacing:-0.03em;
+}
+.brand-tag{
+  font-family:var(--font-mono);font-size:11px;
+  color:rgba(242,240,233,0.4);font-weight:400;
+  margin-left:4px;
+}
+.version-badge{
+  font-family:var(--font-mono);font-size:11px;font-weight:500;
+  background:rgba(204,88,51,0.15);color:var(--burnt-orange);
+  padding:4px 10px;border-radius:100px;
+  letter-spacing:0.02em;
+}
+.menu-toggle{
+  display:none;background:none;border:none;cursor:pointer;
+  color:var(--off-white);padding:8px;
+}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  position:fixed;top:var(--header-h);left:0;bottom:0;
+  width:var(--sidebar-w);
+  background:var(--dark-gray);
+  overflow-y:auto;
+  padding:20px 0;
+  border-right:1px solid rgba(255,255,255,0.04);
+  z-index:90;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(255,255,255,0.08) transparent;
+}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:4px}
+.sidebar-section-label{
+  font-size:10px;font-weight:700;text-transform:uppercase;
+  letter-spacing:0.1em;color:rgba(242,240,233,0.3);
+  padding:16px 20px 8px;
+}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 20px;cursor:pointer;
+  color:rgba(242,240,233,0.55);
+  font-size:13.5px;font-weight:500;
+  transition:all 0.15s;
+  border-left:3px solid transparent;
+  text-decoration:none;
+}
+.nav-item:hover{
+  color:var(--off-white);background:rgba(255,255,255,0.04);
+}
+.nav-item.active{
+  color:var(--off-white);
+  border-left-color:var(--burnt-orange);
+  background:rgba(204,88,51,0.08);
+}
+.nav-num{
+  font-family:var(--font-mono);font-size:11px;
+  color:rgba(242,240,233,0.25);min-width:20px;
+}
+.nav-item.active .nav-num{color:var(--burnt-orange)}
+
+/* ── SEARCH ── */
+.search-wrap{padding:0 16px 12px}
+.search-input{
+  width:100%;padding:9px 12px 9px 36px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:8px;color:var(--off-white);
+  font-family:var(--font-sans);font-size:13px;
+  outline:none;transition:all 0.2s;
+}
+.search-input::placeholder{color:rgba(242,240,233,0.3)}
+.search-input:focus{
+  border-color:rgba(204,88,51,0.4);
+  background:rgba(255,255,255,0.08);
+  box-shadow:0 0 0 3px rgba(204,88,51,0.1);
+}
+.search-icon{
+  position:absolute;left:28px;top:50%;transform:translateY(-50%);
+  color:rgba(242,240,233,0.25);pointer-events:none;
+}
+
+/* ── MAIN CONTENT ── */
+.main{
+  margin-left:var(--sidebar-w);
+  margin-top:var(--header-h);
+  min-height:calc(100vh - var(--header-h));
+}
+
+/* Hero */
+.hero{
+  background:var(--dark-gray);
+  padding:56px 48px 48px;
+  position:relative;
+  overflow:hidden;
+}
+.hero::after{
+  content:'';position:absolute;right:-80px;top:-80px;
+  width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(204,88,51,0.08) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-eyebrow{
+  font-family:var(--font-mono);font-size:12px;font-weight:500;
+  color:var(--burnt-orange);text-transform:uppercase;
+  letter-spacing:0.08em;margin-bottom:16px;
+  display:flex;align-items:center;gap:8px;
+}
+.hero h1{
+  font-size:clamp(32px,5vw,48px);font-weight:800;
+  color:var(--off-white);letter-spacing:-0.04em;
+  line-height:1.1;margin-bottom:12px;
+}
+.hero-sub{
+  font-size:17px;color:rgba(242,240,233,0.55);
+  max-width:640px;line-height:1.6;
+}
+.hero-stats{
+  display:flex;gap:24px;margin-top:28px;flex-wrap:wrap;
+}
+.hero-stat{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:12px;padding:14px 20px;
+  min-width:140px;
+}
+.hero-stat-num{
+  font-family:var(--font-mono);font-size:22px;font-weight:700;
+  color:var(--burnt-orange);
+}
+.hero-stat-label{
+  font-size:12px;color:rgba(242,240,233,0.4);margin-top:2px;
+}
+
+/* Content area */
+.content-area{
+  max-width:900px;padding:40px 48px 80px;
+}
+
+/* Section */
+.section{display:none}
+.section.active{display:block}
+.section-title{
+  font-size:clamp(24px,3.5vw,32px);font-weight:800;
+  letter-spacing:-0.03em;color:var(--dark-gray);
+  margin-bottom:8px;line-height:1.2;
+}
+.section-desc{
+  font-size:16px;color:var(--text-muted);
+  margin-bottom:32px;line-height:1.6;
+}
+
+/* Sub-sections */
+.subsection{
+  margin-bottom:24px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:var(--bg-card);
+  overflow:hidden;
+  transition:box-shadow 0.2s;
+}
+.subsection:hover{box-shadow:var(--shadow-soft)}
+.subsection-header{
+  padding:18px 22px;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;transition:background 0.15s;
+  user-select:none;
+}
+.subsection-header:hover{background:rgba(26,26,26,0.02)}
+.subsection-header h3{
+  font-size:16px;font-weight:700;
+  letter-spacing:-0.01em;color:var(--dark-gray);
+  display:flex;align-items:center;gap:10px;
+}
+.subsection-chevron{
+  width:20px;height:20px;color:var(--text-muted);
+  transition:transform 0.25s ease;flex-shrink:0;
+}
+.subsection.open .subsection-chevron{transform:rotate(90deg)}
+.subsection-body{
+  display:none;padding:0 22px 22px;
+  border-top:1px solid var(--border);
+}
+.subsection.open .subsection-body{display:block;padding-top:18px}
+
+/* Flat content (no accordion) */
+.flat-content{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:28px;
+  margin-bottom:24px;
+}
+
+/* Code blocks */
+pre{
+  background:var(--bg-code);
+  color:#e2dfd7;
+  font-family:var(--font-mono);
+  font-size:13px;line-height:1.7;
+  padding:20px 22px;
+  border-radius:10px;
+  overflow-x:auto;
+  margin:16px 0;
+  border:1px solid rgba(255,255,255,0.04);
+  position:relative;
+}
+pre .comment{color:#6a6a5f}
+pre .keyword{color:#cc5833}
+pre .string{color:#7dae7d}
+pre .arrow{color:#d4a574}
+
+code:not(pre code){
+  font-family:var(--font-mono);font-size:0.88em;
+  background:var(--bg-code-inline);
+  padding:2px 7px;border-radius:5px;
+  color:#9e4a2a;font-weight:500;
+}
+
+/* Tables */
+.table-wrap{overflow-x:auto;margin:16px 0}
+table{
+  width:100%;border-collapse:collapse;
+  font-size:14px;
+}
+th{
+  text-align:left;font-weight:700;font-size:12px;
+  text-transform:uppercase;letter-spacing:0.05em;
+  color:var(--text-muted);
+  padding:10px 14px;
+  border-bottom:2px solid var(--border-med);
+  background:rgba(26,26,26,0.02);
+}
+td{
+  padding:11px 14px;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+}
+tr:last-child td{border-bottom:none}
+td code{font-size:12px}
+
+/* Badges */
+.badge{
+  display:inline-flex;align-items:center;
+  font-size:11px;font-weight:600;
+  padding:3px 10px;border-radius:100px;
+  letter-spacing:0.03em;
+}
+.badge-active{background:rgba(74,138,110,0.12);color:var(--active-accent)}
+.badge-inactive{background:rgba(26,26,26,0.06);color:var(--text-muted)}
+.badge-required{background:rgba(204,88,51,0.1);color:var(--burnt-orange)}
+.badge-orange{background:var(--orange-glow);color:var(--burnt-orange)}
+
+/* Callouts */
+.callout{
+  padding:16px 20px;border-radius:10px;
+  margin:16px 0;font-size:14px;
+  display:flex;gap:12px;align-items:flex-start;
+}
+.callout-info{
+  background:var(--green-glow);
+  border-left:3px solid var(--forest-green);
+}
+.callout-warn{
+  background:rgba(212,165,116,0.1);
+  border-left:3px solid var(--review-accent);
+}
+.callout-tip{
+  background:var(--orange-glow);
+  border-left:3px solid var(--burnt-orange);
+}
+.callout-icon{font-size:18px;flex-shrink:0;line-height:1.4}
+.callout p{margin:0}
+
+/* Architecture diagram */
+.arch-diagram{
+  background:var(--bg-code);
+  color:#e2dfd7;
+  font-family:var(--font-mono);
+  font-size:12.5px;line-height:1.6;
+  padding:28px;border-radius:12px;
+  overflow-x:auto;margin:20px 0;
+  border:1px solid rgba(255,255,255,0.04);
+  white-space:pre;
+}
+.arch-diagram .highlight{color:var(--burnt-orange);font-weight:500}
+.arch-diagram .dim{color:rgba(226,223,215,0.4)}
+.arch-diagram .green{color:#7dae7d}
+
+/* Lifecycle steps */
+.lifecycle{
+  display:flex;flex-direction:column;gap:0;
+  margin:20px 0;
+}
+.lifecycle-step{
+  display:flex;gap:16px;position:relative;
+  padding:16px 0;
+}
+.lifecycle-step:not(:last-child)::before{
+  content:'';position:absolute;
+  left:17px;top:42px;bottom:-2px;
+  width:2px;background:var(--border-med);
+}
+.lifecycle-num{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--dark-gray);color:var(--off-white);
+  font-family:var(--font-mono);font-size:13px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;position:relative;z-index:1;
+}
+.lifecycle-content h4{
+  font-size:14px;font-weight:700;margin-bottom:4px;
+}
+.lifecycle-content p{
+  font-size:13.5px;color:var(--text-muted);line-height:1.55;
+}
+
+/* Feature cards */
+.feature-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:16px;margin:20px 0;
+}
+.feature-card{
+  border:1px solid var(--border);
+  border-radius:12px;padding:20px;
+  background:var(--bg-card);
+  transition:all 0.2s;
+}
+.feature-card:hover{
+  border-color:var(--burnt-orange);
+  box-shadow:0 4px 16px rgba(204,88,51,0.06);
+}
+.feature-card-icon{
+  width:36px;height:36px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;margin-bottom:12px;
+}
+.feature-card h4{font-size:14px;font-weight:700;margin-bottom:6px}
+.feature-card p{font-size:13px;color:var(--text-muted);line-height:1.5}
+
+/* Comparison table */
+.comparison-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:20px;margin:20px 0;
+}
+.comparison-col{
+  border:1px solid var(--border);
+  border-radius:14px;padding:24px;
+  background:var(--bg-card);
+}
+.comparison-col h4{
+  font-size:15px;font-weight:700;margin-bottom:12px;
+  display:flex;align-items:center;gap:8px;
+}
+.comparison-col ul{
+  list-style:none;padding:0;
+}
+.comparison-col li{
+  padding:6px 0;font-size:13.5px;
+  display:flex;align-items:flex-start;gap:8px;
+}
+.comparison-col li::before{
+  content:'';width:6px;height:6px;
+  border-radius:50%;margin-top:7px;flex-shrink:0;
+}
+.col-pope li::before{background:var(--burnt-orange)}
+.col-vibe li::before{background:var(--forest-green)}
+
+/* Content typography */
+.content-block p{margin:10px 0;font-size:15px;line-height:1.7}
+.content-block h4{font-size:15px;font-weight:700;margin:20px 0 8px}
+.content-block ul,.content-block ol{
+  padding-left:20px;margin:10px 0;
+}
+.content-block li{
+  padding:4px 0;font-size:14.5px;line-height:1.6;
+}
+.content-block strong{font-weight:700;color:var(--dark-gray)}
+.content-block blockquote{
+  border-left:3px solid var(--burnt-orange);
+  padding:12px 18px;margin:16px 0;
+  background:var(--orange-glow);
+  border-radius:0 8px 8px 0;
+  font-size:14px;
+}
+
+/* Footer */
+.site-footer{
+  padding:32px 48px;
+  border-top:1px solid var(--border);
+  text-align:center;
+  font-size:12px;color:var(--text-muted);
+  font-family:var(--font-mono);
+}
+
+/* Scroll to top */
+.scroll-top{
+  position:fixed;bottom:24px;right:24px;
+  width:44px;height:44px;border-radius:12px;
+  background:var(--dark-gray);color:var(--off-white);
+  border:none;cursor:pointer;
+  display:none;align-items:center;justify-content:center;
+  box-shadow:var(--shadow-lift);
+  transition:all 0.2s;z-index:80;
+}
+.scroll-top:hover{background:var(--burnt-orange)}
+.scroll-top.visible{display:flex}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  :root{--sidebar-w:0px}
+  .sidebar{
+    transform:translateX(-100%);
+    transition:transform 0.3s ease;
+    width:280px;
+  }
+  .sidebar.open{transform:translateX(0)}
+  .menu-toggle{display:block}
+  .hero{padding:40px 24px 36px}
+  .content-area{padding:28px 20px 60px}
+  .comparison-grid{grid-template-columns:1fr}
+  .hero-stats{gap:12px}
+  .hero-stat{min-width:120px;padding:12px 16px}
+  .site-footer{padding:24px 20px}
+}
+@media(max-width:480px){
+  .hero h1{font-size:28px}
+  .hero-stats{flex-direction:column}
+}
+
+/* Overlay for mobile sidebar */
+.sidebar-overlay{
+  display:none;position:fixed;inset:0;z-index:85;
+  background:rgba(26,26,26,0.5);
+  backdrop-filter:blur(2px);
+}
+.sidebar-overlay.active{display:block}
+
+/* Print */
+@media print{
+  .sidebar,.site-header,.scroll-top,.menu-toggle{display:none!important}
+  .main{margin-left:0!important;margin-top:0!important}
+  .section{display:block!important}
+  .subsection-body{display:block!important}
+  pre{white-space:pre-wrap;border:1px solid #ccc}
+}
+
+/* Focus */
+:focus-visible{
+  outline:3px solid rgba(204,88,51,0.45);
+  outline-offset:2px;
+}
+
+/* Animations */
+@media(prefers-reduced-motion:no-preference){
+  .subsection-body{animation:fadeIn 0.2s ease}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+  .section{animation:sectionIn 0.25s ease}
+  @keyframes sectionIn{from{opacity:0}to{opacity:1}}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle navigation">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#cc5833" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+      <span class="brand-text">PopeBot<span class="brand-tag">docs</span></span>
+    </div>
+    <span class="version-badge">v1.2.73</span>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+<nav class="sidebar" id="sidebar">
+  <div class="search-wrap" style="position:relative">
+    <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input class="search-input" type="text" placeholder="Search docs..." oninput="filterNav(this.value)" id="searchInput">
+  </div>
+  <div class="sidebar-section-label">Guide</div>
+  <div id="navList"></div>
+</nav>
+
+<!-- MAIN -->
+<main class="main" id="mainContent">
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-eyebrow">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      Autonomous AI Agent Platform
+    </div>
+    <h1>PopeBot<br>Complete User Guide</h1>
+    <p class="hero-sub">An autonomous AI agent platform that runs 24/7. Fire off tasks, walk away, and get results committed to GitHub with full auditability.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">15</div>
+        <div class="hero-stat-label">Sections</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">8</div>
+        <div class="hero-stat-label">Skills Available</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">4</div>
+        <div class="hero-stat-label">Job Dispatch Methods</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">24/7</div>
+        <div class="hero-stat-label">Autonomous Ops</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sections rendered by JS -->
+  <div class="content-area" id="contentArea"></div>
+
+  <footer class="site-footer">
+    PopeBot v1.2.73 · fullREFIT/popebot · Generated 2026-03-14
+  </footer>
+</main>
+
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<script>
+// ── DATA ──
+const sections = [
+  {
+    id: "what-is-popebot",
+    num: "01",
+    title: "What Is PopeBot?",
+    desc: "Architecture overview and core concepts",
+    content: `
+      <div class="content-block">
+        <p>PopeBot is an <strong>autonomous AI agent platform</strong> that runs 24/7. Think of it as hiring a team of AI developers that work around the clock, commit their work to GitHub, and notify you when they're done.</p>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Two-Layer Architecture</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="arch-diagram"><span class="dim">You (Chat / Telegram / Cron / Webhook / API)</span>
+        │
+        ▼
+┌─────────────────────┐
+│   <span class="highlight">Event Handler</span>     │  ← Next.js server (local machine or VPS)
+│   - Web UI          │     Handles chat, scheduling, job dispatch
+│   - Telegram bot    │
+│   - Cron scheduler  │
+│   - Webhook router  │
+└────────┬────────────┘
+         │ creates <span class="green">job/&lt;uuid&gt;</span> branch
+         ▼
+┌─────────────────────┐
+│   <span class="highlight">GitHub Actions</span>    │  ← Free compute (2,000 min/month)
+│   - Spins up Docker │
+│   - Runs LLM agent  │
+│   - Agent does work  │
+│   - Commits results  │
+│   - Opens PR         │
+│   - Auto-merges      │
+│   - Notifies you     │
+└─────────────────────┘</div>
+          <p><strong>The core loop:</strong> You describe a task → PopeBot creates a git branch → GitHub Actions spins up a Docker container → the LLM agent does the work autonomously → commits results → opens a PR → auto-merges → notifies you via web UI and Telegram.</p>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>What Makes It Different</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="feature-grid">
+            <div class="feature-card">
+              <div class="feature-card-icon" style="background:var(--orange-glow)">🗂️</div>
+              <h4>The Repo IS the Agent</h4>
+              <p>Every action is a git commit. Full history, full auditability, full reversibility.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-card-icon" style="background:var(--green-glow)">💸</div>
+              <h4>Free Compute</h4>
+              <p>GitHub Actions doesn't charge for public repos. Private repos get 2,000 free minutes/month.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-card-icon" style="background:rgba(99,102,241,0.1)">🧬</div>
+              <h4>Self-Evolving</h4>
+              <p>The agent can modify its own code, personality, skills, and cron jobs through PRs.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-card-icon" style="background:rgba(212,165,116,0.12)">🔑</div>
+              <h4>Pay Only for LLM</h4>
+              <p>You only pay for Anthropic API calls. Everything else is free infrastructure.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    `
+  },
+  {
+    id: "your-setup",
+    num: "02",
+    title: "Your Setup",
+    desc: "Current installation configuration",
+    content: `
+      <div class="flat-content">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Component</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Web UI</strong></td><td><code>https://bot.fullrefit.net</code></td></tr>
+              <tr><td><strong>GitHub Repo</strong></td><td><code>fullREFIT/popebot</code></td></tr>
+              <tr><td><strong>GitHub User</strong></td><td><code>fullREFIT</code></td></tr>
+              <tr><td><strong>Tunnel</strong></td><td>Cloudflare Tunnel (permanent)</td></tr>
+              <tr><td><strong>LLM Provider</strong></td><td>Anthropic (Claude)</td></tr>
+              <tr><td><strong>Telegram Bot</strong></td><td><span class="badge badge-active">Connected</span></td></tr>
+              <tr><td><strong>Project Directory</strong></td><td><code>/Users/paul/dev-4/pope-bot/popebot-fresh/</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `
+  },
+  {
+    id: "starting-stopping",
+    num: "03",
+    title: "Starting & Stopping",
+    desc: "How to start, stop, and check status",
+    content: `
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Start Everything</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <pre><span class="keyword">cd</span> /Users/paul/dev-4/pope-bot/popebot-fresh
+<span class="keyword">./start.sh</span></pre>
+          <p>This starts the Next.js dev server + Cloudflare Tunnel. Your bot is immediately available at <code>https://bot.fullrefit.net</code>.</p>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Stop Everything</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <pre><span class="keyword">./stop.sh</span></pre>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Check If Running</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <pre><span class="keyword">curl</span> -s https://bot.fullrefit.net/api/ping
+<span class="comment"># Should return: {"message":"Pong!"}</span></pre>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>View Logs</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <pre><span class="comment"># Dev server logs</span>
+<span class="keyword">tail</span> -f /tmp/popebot-dev.log
+
+<span class="comment"># Tunnel logs</span>
+<span class="keyword">tail</span> -f /tmp/cloudflared.log</pre>
+        </div>
+      </div>
+    `
+  },
+  {
+    id: "web-ui",
+    num: "04",
+    title: "Web UI Guide",
+    desc: "Pages, chat interface, and typical workflows",
+    content: `
+      <div class="callout callout-tip">
+        <span class="callout-icon">🌐</span>
+        <p>Access at <strong>https://bot.fullrefit.net</strong></p>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Pages Overview</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Page</th><th>URL</th><th>Purpose</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Chat</strong></td><td><code>/</code></td><td>Main interface — talk to the agent, plan and dispatch jobs</td></tr>
+                <tr><td><strong>Chat History</strong></td><td><code>/chats</code></td><td>View and resume past conversations</td></tr>
+                <tr><td><strong>Clusters</strong></td><td><code>/clusters</code></td><td>Create and manage multi-agent teams</td></tr>
+                <tr><td><strong>Code Workspace</strong></td><td><code>/code/[id]</code></td><td>Live Claude Code terminal in your browser</td></tr>
+                <tr><td><strong>Runners</strong></td><td><code>/runners</code></td><td>Monitor running and queued agent jobs</td></tr>
+                <tr><td><strong>Pull Requests</strong></td><td><code>/pull-requests</code></td><td>View job PRs on GitHub</td></tr>
+                <tr><td><strong>Notifications</strong></td><td><code>/notifications</code></td><td>Job completion and failure alerts</td></tr>
+                <tr><td><strong>Settings &gt; Crons</strong></td><td><code>/settings/crons</code></td><td>Create/edit scheduled jobs</td></tr>
+                <tr><td><strong>Settings &gt; Triggers</strong></td><td><code>/settings/triggers</code></td><td>Create/edit webhook triggers</td></tr>
+                <tr><td><strong>Settings &gt; Secrets</strong></td><td><code>/settings/secrets</code></td><td>Manage API keys</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Chat Interface</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="content-block">
+            <p>The chat is your primary way to interact with PopeBot. Through conversation you can:</p>
+            <ul>
+              <li><strong>Ask questions</strong> — the LLM responds using the personality defined in <code>config/SOUL.md</code></li>
+              <li><strong>Plan tasks</strong> — describe what you want, the LLM helps you scope it into a concrete job description</li>
+              <li><strong>Dispatch jobs</strong> — once you approve a plan, the LLM calls <code>create_job</code> to launch a Docker agent</li>
+              <li><strong>Check status</strong> — ask "what's running?" or "any updates?"</li>
+              <li><strong>Web search</strong> — if Brave Search is activated, the LLM can search the web during conversation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Typical Chat Flow</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <pre><span class="string">You:</span> "I want to add a dark mode toggle to the settings page"
+
+<span class="highlight">PopeBot:</span> "I can help with that. Here's what I'd have the agent do:
+1. Add a dark mode toggle component to the settings page
+2. Store the preference in localStorage
+3. Apply the theme using CSS variables
+4. Test that it works across all pages
+
+Shall I create a job for this?"
+
+<span class="string">You:</span> "Yes, go ahead"
+
+<span class="highlight">PopeBot:</span> "Job created! ID: abc-123. The agent is starting up now.
+I'll notify you when it's done."
+
+<span class="dim">[5-15 minutes later]</span>
+
+<span class="highlight">PopeBot:</span> "Job abc-123 completed! The agent added dark mode support.
+PR #4 has been auto-merged. Here's what changed: ..."</pre>
+        </div>
+      </div>
+    `
+  },
+  {
+    id: "telegram",
+    num: "05",
+    title: "Telegram Integration",
+    desc: "Mirror the web UI from your phone",
+    content: `
+      <div class="flat-content content-block">
+        <p>Your Telegram bot mirrors the web chat. Everything you can do in the web UI, you can do from Telegram.</p>
+        <h4>What You Can Do</h4>
+        <ul>
+          <li>Send any message to chat with the agent</li>
+          <li>Receive job completion/failure notifications</li>
+          <li>Plan and dispatch jobs from your phone</li>
+          <li>Check job status on the go</li>
+        </ul>
+        <h4>Verifying the Connection</h4>
+        <pre><span class="keyword">curl</span> -s <span class="string">"https://api.telegram.org/bot&lt;TOKEN&gt;/getWebhookInfo"</span> | python3 -m json.tool</pre>
+        <p>The <code>url</code> field should show <code>https://bot.fullrefit.net/api/telegram/webhook</code>.</p>
+      </div>
+    `
+  },
+  {
+    id: "creating-jobs",
+    num: "06",
+    title: "Creating Jobs",
+    desc: "Autonomous agent tasks — the fundamental unit of work",
+    content: `
+      <div class="content-block">
+        <p>Jobs are the fundamental unit of work. Each job gets its own git branch (<code>job/&lt;uuid&gt;</code>), its own Docker container, its own pull request, and automatic notification when done.</p>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Four Ways to Create Jobs</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="feature-grid">
+            <div class="feature-card">
+              <div class="feature-card-icon" style="background:var(--orange-glow)">💬</div>
+              <h4>Via Chat</h4>
+              <p>Describe what you want in natural language. The LLM helps you refine and dispatches when you approve.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-card-icon" style="background:var(--green-glow)">🔗</div>
+              <h4>Via API</h4>
+              <p>POST to <code>/api/create-job</code> with a title and job description. Create API keys in Settings.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-card-icon" style="background:rgba(99,102,241,0.1)">⏰</div>
+              <h4>Via Cron</h4>
+              <p>Jobs run automatically on a schedule. Set up in Settings > Crons.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-card-icon" style="background:rgba(212,165,116,0.12)">⚡</div>
+              <h4>Via Webhook</h4>
+              <p>Jobs fire in response to external events — GitHub pushes, Stripe payments, etc.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Agent Capabilities Inside a Job</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Capability</th><th>Details</th></tr></thead>
+              <tbody>
+                <tr><td><strong>File operations</strong></td><td>Read, write, edit, delete any file in the repo</td></tr>
+                <tr><td><strong>Bash execution</strong></td><td>Run any command: npm, python, curl, git, etc.</td></tr>
+                <tr><td><strong>Web browsing</strong></td><td>Headless Chrome for navigation, screenshots, scraping</td></tr>
+                <tr><td><strong>Web search</strong></td><td>Brave Search API for real-time information</td></tr>
+                <tr><td><strong>Image generation</strong></td><td>Kie AI for images (1K–4K) and videos</td></tr>
+                <tr><td><strong>Self-modification</strong></td><td>Edit its own config, personality, cron jobs, triggers, and skills</td></tr>
+                <tr><td><strong>Skill creation</strong></td><td>Build entirely new skills from scratch during a job</td></tr>
+                <tr><td><strong>Git operations</strong></td><td>Commit, push, create branches, open PRs</td></tr>
+                <tr><td><strong>Package management</strong></td><td>Install npm/pip/apt packages as needed</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Job Lifecycle</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="lifecycle">
+            <div class="lifecycle-step"><div class="lifecycle-num">1</div><div class="lifecycle-content"><h4>Job Created</h4><p>Event handler pushes <code>job/&lt;uuid&gt;</code> branch to GitHub with the task prompt</p></div></div>
+            <div class="lifecycle-step"><div class="lifecycle-num">2</div><div class="lifecycle-content"><h4>GitHub Actions Triggered</h4><p><code>run-job.yml</code> workflow fires on <code>job/*</code> branch creation, pulls Docker agent image</p></div></div>
+            <div class="lifecycle-step"><div class="lifecycle-num">3</div><div class="lifecycle-content"><h4>Container Starts</h4><p>Exports secrets, clones the job branch, installs skill dependencies, starts headless Chrome</p></div></div>
+            <div class="lifecycle-step"><div class="lifecycle-num">4</div><div class="lifecycle-content"><h4>Agent Runs</h4><p>System prompt built from <code>SOUL.md</code> + <code>JOB_AGENT.md</code>. Agent works autonomously.</p></div></div>
+            <div class="lifecycle-step"><div class="lifecycle-num">5</div><div class="lifecycle-content"><h4>Results Committed</h4><p>On success: all changes + logs committed. On failure: only logs committed.</p></div></div>
+            <div class="lifecycle-step"><div class="lifecycle-num">6</div><div class="lifecycle-content"><h4>PR Created</h4><p>Agent opens a pull request against main</p></div></div>
+            <div class="lifecycle-step"><div class="lifecycle-num">7</div><div class="lifecycle-content"><h4>Auto-Merge</h4><p>Checks <code>ALLOWED_PATHS</code>. If changes are within allowed paths: squash-merge. Otherwise: manual review.</p></div></div>
+            <div class="lifecycle-step"><div class="lifecycle-num">8</div><div class="lifecycle-content"><h4>Notification</h4><p>Web notification + Telegram message with summary of what was done</p></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Auto-Merge Configuration</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="content-block">
+            <p>By default, only changes to <code>/logs</code> are auto-merged. To let the agent modify any file:</p>
+            <pre><span class="keyword">gh</span> variable set ALLOWED_PATHS --body <span class="string">"/"</span> --repo fullREFIT/popebot</pre>
+            <p>To disable auto-merge entirely:</p>
+            <pre><span class="keyword">gh</span> variable set AUTO_MERGE --body <span class="string">"false"</span> --repo fullREFIT/popebot</pre>
+          </div>
+        </div>
+      </div>
+    `
+  },
+  {
+    id: "clusters",
+    num: "07",
+    title: "Agent Clusters",
+    desc: "Multi-agent teams working in parallel",
+    content: `
+      <div class="callout callout-warn">
+        <span class="callout-icon">⚠️</span>
+        <p><strong>Requires:</strong> <code>CLAUDE_CODE_OAUTH_TOKEN</code> in your <code>.env</code>. Uses your Claude Max subscription instead of API keys.</p>
+      </div>
+      <div class="content-block">
+        <p>Clusters let you run <strong>multiple AI agents simultaneously</strong>, each with a specialized role, collaborating on a project.</p>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>How Clusters Work</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="lifecycle">
+            <div class="lifecycle-step"><div class="lifecycle-num">1</div><div class="lifecycle-content"><h4>Create a Cluster</h4><p>In the web UI, set a name and system prompt (shared mission/vision/goals)</p></div></div>
+            <div class="lifecycle-step"><div class="lifecycle-num">2</div><div class="lifecycle-content"><h4>Define Roles</h4><p>Each role has its own system prompt, user prompt, and concurrency limit</p></div></div>
+            <div class="lifecycle-step"><div class="lifecycle-num">3</div><div class="lifecycle-content"><h4>Configure Triggers</h4><p>Roles can be triggered manually, by webhook, by cron, or by file watch</p></div></div>
+            <div class="lifecycle-step"><div class="lifecycle-num">4</div><div class="lifecycle-content"><h4>Launch Workers</h4><p>Start workers from the console view</p></div></div>
+            <div class="lifecycle-step"><div class="lifecycle-num">5</div><div class="lifecycle-content"><h4>Monitor Progress</h4><p>Real-time progress in the console view with streaming LLM responses</p></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Worker Communication</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="content-block">
+            <p>Workers in a cluster can coordinate through:</p>
+            <ul>
+              <li><strong>Shared folders</strong> (inbox, outbox, reports) — defined at the cluster level</li>
+              <li><strong>GitHub issues and labels</strong> — one worker adds a label, which triggers another</li>
+              <li><strong>Markdown files</strong> — workers write structured reports that other workers read</li>
+              <li><strong>File watch triggers</strong> — a worker writes a file, which triggers another worker to start</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    `
+  },
+  {
+    id: "code-workspace",
+    num: "08",
+    title: "Code Workspace",
+    desc: "Interactive Claude Code in your browser",
+    content: `
+      <div class="callout callout-warn">
+        <span class="callout-icon">⚠️</span>
+        <p><strong>Requires:</strong> <code>CLAUDE_CODE_OAUTH_TOKEN</code> in your <code>.env</code>.</p>
+      </div>
+      <div class="content-block">
+        <p>The code workspace gives you a <strong>live Claude Code session</strong> in your browser. Unlike jobs (fire-and-forget), this is real-time pair programming.</p>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>How It Works</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="lifecycle">
+            <div class="lifecycle-step"><div class="lifecycle-num">1</div><div class="lifecycle-content"><h4>Start Chat in Code Mode</h4><p>Toggle into Code Mode and select the GitHub repository</p></div></div>
+            <div class="lifecycle-step"><div class="lifecycle-num">2</div><div class="lifecycle-content"><h4>Plan Your Task</h4><p>Chat with the planning LLM about what you want to build</p></div></div>
+            <div class="lifecycle-step"><div class="lifecycle-num">3</div><div class="lifecycle-content"><h4>Launch Session</h4><p>Say "let's start coding" — a Docker container launches with Claude Code in a web terminal</p></div></div>
+            <div class="lifecycle-step"><div class="lifecycle-num">4</div><div class="lifecycle-content"><h4>Code Together</h4><p>Your planning context is injected. Interact with Claude Code through the browser.</p></div></div>
+            <div class="lifecycle-step"><div class="lifecycle-num">5</div><div class="lifecycle-content"><h4>Commit & Merge</h4><p>Changes are committed to a feature branch and merged back</p></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Two Modes</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Mode</th><th>How It Works</th><th>Best For</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Interactive</strong></td><td>Live web terminal — you see and interact with Claude Code</td><td>Complex tasks, pair programming, tasks needing human judgment</td></tr>
+                <tr><td><strong>Headless</strong></td><td>Claude Code runs autonomously, you get the result</td><td>Simple tasks where you trust the agent</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="callout callout-info">
+            <span class="callout-icon">📱</span>
+            <p><strong>Mobile support:</strong> Start a coding session on your laptop, switch to your phone without any configuration, and continue interacting from anywhere.</p>
+          </div>
+        </div>
+      </div>
+    `
+  },
+  {
+    id: "cron-jobs",
+    num: "09",
+    title: "Cron Jobs",
+    desc: "Scheduled automation — three action types",
+    content: `
+      <div class="content-block">
+        <p>Cron jobs run tasks on a schedule. Configure in <strong>Settings > Crons</strong> or by editing <code>config/CRONS.json</code>.</p>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Three Action Types</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Type</th><th>What It Does</th><th>Uses LLM?</th><th>Cost</th></tr></thead>
+              <tbody>
+                <tr><td><code>agent</code></td><td>Spins up a Docker container with full LLM agent</td><td>Yes</td><td>LLM API + Actions min</td></tr>
+                <tr><td><code>command</code></td><td>Runs a shell command on the event handler server</td><td>No</td><td>Free</td></tr>
+                <tr><td><code>webhook</code></td><td>Makes an HTTP request to an external URL</td><td>No</td><td>Free</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Cron Expression Cheat Sheet</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Expression</th><th>Meaning</th></tr></thead>
+              <tbody>
+                <tr><td><code>*/5 * * * *</code></td><td>Every 5 minutes</td></tr>
+                <tr><td><code>0 * * * *</code></td><td>Every hour on the hour</td></tr>
+                <tr><td><code>0 9 * * *</code></td><td>Daily at 9:00 AM</td></tr>
+                <tr><td><code>0 9 * * 1-5</code></td><td>Weekdays at 9:00 AM</td></tr>
+                <tr><td><code>0 0 * * 0</code></td><td>Weekly on Sunday at midnight</td></tr>
+                <tr><td><code>0 0 1 * *</code></td><td>Monthly on the 1st at midnight</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Pre-Built Cron Jobs</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Name</th><th>Schedule</th><th>Type</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>heartbeat</code></td><td>Every 30 min</td><td><span class="badge badge-orange">agent</span></td><td>Runs tasks defined in HEARTBEAT.md</td></tr>
+                <tr><td><code>daily-check</code></td><td>9am daily</td><td><span class="badge badge-orange">agent</span></td><td>Checks for dependency updates</td></tr>
+                <tr><td><code>ping</code></td><td>Every 1 min</td><td><span class="badge badge-active">command</span></td><td>Simple health check <span class="badge badge-active">Enabled</span></td></tr>
+                <tr><td><code>cleanup-logs</code></td><td>Weekly Sunday</td><td><span class="badge badge-active">command</span></td><td>Lists log directory</td></tr>
+                <tr><td><code>ping-status</code></td><td>Every 5 min</td><td><span class="badge badge-inactive">webhook</span></td><td>POSTs to a status endpoint</td></tr>
+                <tr><td><code>health-check</code></td><td>Every 10 min</td><td><span class="badge badge-inactive">webhook</span></td><td>GETs a health endpoint</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Per-Cron LLM Override</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="content-block">
+            <p>Use a different (cheaper/faster) LLM for specific crons:</p>
+            <pre>{
+  <span class="string">"name"</span>: <span class="string">"quick-check"</span>,
+  <span class="string">"schedule"</span>: <span class="string">"0 * * * *"</span>,
+  <span class="string">"type"</span>: <span class="string">"agent"</span>,
+  <span class="string">"job"</span>: <span class="string">"Quick status check"</span>,
+  <span class="string">"llm_provider"</span>: <span class="string">"google"</span>,
+  <span class="string">"llm_model"</span>: <span class="string">"gemini-2.5-flash"</span>,
+  <span class="string">"enabled"</span>: <span class="keyword">true</span>
+}</pre>
+          </div>
+        </div>
+      </div>
+    `
+  },
+  {
+    id: "webhooks",
+    num: "10",
+    title: "Webhook Triggers",
+    desc: "Fire actions from external events",
+    content: `
+      <div class="content-block">
+        <p>Triggers fire actions when external services POST to your endpoints. Configure in <strong>Settings > Triggers</strong> or <code>config/TRIGGERS.json</code>.</p>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Template Tokens</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Token</th><th>Resolves To</th><th>Example</th></tr></thead>
+              <tbody>
+                <tr><td><code>{{body}}</code></td><td>Entire request body as JSON</td><td><code>{"ref":"refs/heads/main",...}</code></td></tr>
+                <tr><td><code>{{body.ref}}</code></td><td>Specific field from body</td><td><code>refs/heads/main</code></td></tr>
+                <tr><td><code>{{body.sender.login}}</code></td><td>Nested field</td><td><code>octocat</code></td></tr>
+                <tr><td><code>{{query.param}}</code></td><td>URL query parameter</td><td><code>value</code></td></tr>
+                <tr><td><code>{{headers.x-github-event}}</code></td><td>Request header</td><td><code>push</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Setting Up External Webhooks</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="lifecycle">
+            <div class="lifecycle-step"><div class="lifecycle-num">1</div><div class="lifecycle-content"><h4>Create a Trigger</h4><p>In PopeBot, create a trigger watching <code>/webhook/github-push</code></p></div></div>
+            <div class="lifecycle-step"><div class="lifecycle-num">2</div><div class="lifecycle-content"><h4>Add Webhook in GitHub</h4><p>Settings > Webhooks > Add webhook</p></div></div>
+            <div class="lifecycle-step"><div class="lifecycle-num">3</div><div class="lifecycle-content"><h4>Set Payload URL</h4><p><code>https://bot.fullrefit.net/webhook/github-push</code></p></div></div>
+            <div class="lifecycle-step"><div class="lifecycle-num">4</div><div class="lifecycle-content"><h4>Configure</h4><p>Set content type to <code>application/json</code>, choose events to send</p></div></div>
+          </div>
+        </div>
+      </div>
+    `
+  },
+  {
+    id: "skills",
+    num: "11",
+    title: "Skills",
+    desc: "Agent capabilities — installed and custom",
+    content: `
+      <div class="content-block">
+        <p>Skills extend what the agent can do inside jobs. They're modular, self-contained tool packages.</p>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Currently Installed Skills</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Skill</th><th>Status</th><th>Description</th><th>API Key</th></tr></thead>
+              <tbody>
+                <tr><td><strong>browser-tools</strong></td><td><span class="badge badge-active">Active</span></td><td>Headless Chrome: navigate, screenshot, scrape, evaluate JS</td><td>None</td></tr>
+                <tr><td><strong>llm-secrets</strong></td><td><span class="badge badge-active">Active</span></td><td>Lists available API key names for the agent</td><td>None</td></tr>
+                <tr><td><strong>modify-self</strong></td><td><span class="badge badge-active">Active</span></td><td>Meta-skill: instructs agent to read CLAUDE.md before self-modifying</td><td>None</td></tr>
+                <tr><td>brave-search</td><td><span class="badge badge-inactive">Inactive</span></td><td>Web search with filters + content extraction to markdown</td><td><span class="badge badge-required">BRAVE_API_KEY</span></td></tr>
+                <tr><td>youtube-transcript</td><td><span class="badge badge-inactive">Inactive</span></td><td>Fetch timestamped transcripts from YouTube videos</td><td>None</td></tr>
+                <tr><td>google-docs</td><td><span class="badge badge-inactive">Inactive</span></td><td>Create Google Docs on a shared drive</td><td><span class="badge badge-required">Service Account</span></td></tr>
+                <tr><td>google-drive</td><td><span class="badge badge-inactive">Inactive</span></td><td>List, upload, download, delete files on Drive</td><td><span class="badge badge-required">Service Account</span></td></tr>
+                <tr><td>kie-ai</td><td><span class="badge badge-inactive">Inactive</span></td><td>AI image gen (1K–4K) and video generation</td><td><span class="badge badge-required">KIE_AI_API_KEY</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Activate / Deactivate Skills</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="content-block">
+            <h4>Activate</h4>
+            <pre><span class="keyword">cd</span> /Users/paul/dev-4/pope-bot/popebot-fresh
+
+<span class="comment"># Create symlink to activate</span>
+<span class="keyword">ln</span> -s ../brave-search skills/active/brave-search
+
+<span class="comment"># If the skill needs an API key (AGENT_LLM_ prefix = visible to LLM)</span>
+<span class="keyword">gh</span> secret set AGENT_LLM_BRAVE_API_KEY --body <span class="string">"your-api-key-here"</span> --repo fullREFIT/popebot</pre>
+            <h4>Deactivate</h4>
+            <pre><span class="keyword">rm</span> skills/active/brave-search</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Building Custom Skills</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="content-block">
+            <p>Every skill needs this structure:</p>
+            <pre>skills/
+  my-skill/
+    SKILL.md          <span class="comment"># Frontmatter with name, description, tools list</span>
+    my-tool.js        <span class="comment"># Tool script (accepts args, writes to stdout)</span>
+    package.json      <span class="comment"># If npm dependencies needed</span></pre>
+            <p><strong>SKILL.md format:</strong></p>
+            <pre>---
+<span class="string">name</span>: my-skill
+<span class="string">description</span>: What this skill does (shown to the LLM)
+<span class="string">tools</span>:
+  - <span class="string">name</span>: my-tool
+    <span class="string">description</span>: What this specific tool does
+    <span class="string">args</span>:
+      - <span class="string">name</span>: query
+        <span class="string">description</span>: The input to process
+        <span class="string">required</span>: <span class="keyword">true</span>
+    <span class="string">script</span>: my-tool.js
+---</pre>
+          </div>
+        </div>
+      </div>
+    `
+  },
+  {
+    id: "examples",
+    num: "12",
+    title: "Prompt Cookbook",
+    desc: "Real project examples from simple to complex",
+    content: `
+      <div class="content-block">
+        <p>Real projects you can build with PopeBot, organized from simple to complex. Each includes the exact prompts to use.</p>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Simple Jobs (5–15 min)</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="content-block">
+            <h4>Documentation Generator</h4>
+            <blockquote>"Scan the entire codebase and generate comprehensive API documentation. For each endpoint, document the HTTP method, URL, request body schema, response format, authentication requirements, and include curl examples. Write the output to docs/API.md"</blockquote>
+            <h4>README Overhaul</h4>
+            <blockquote>"Read every file in the project. Then rewrite README.md to be comprehensive and professional. Include: project overview, architecture diagram (ASCII art), prerequisites, installation steps, configuration reference, usage examples, troubleshooting section, and contributing guidelines."</blockquote>
+            <h4>Dependency Audit</h4>
+            <blockquote>"Run npm audit, check all dependencies for known vulnerabilities, check if any packages are deprecated or unmaintained (no commits in 12+ months). Write a report to docs/dependency-audit.md with findings and recommended actions."</blockquote>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Content & Research Jobs (10–30 min)</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="content-block">
+            <h4>Competitive Analysis <span class="badge badge-required">brave-search</span></h4>
+            <blockquote>"Research the top 5 competitors to [YOUR PRODUCT]. For each one, find: pricing, key features, target audience, recent funding/news, and their tech stack. Write a structured competitive analysis to docs/competitive-analysis.md with a comparison matrix."</blockquote>
+            <h4>Blog Post Generator <span class="badge badge-required">brave-search</span></h4>
+            <blockquote>"Research the topic '[YOUR TOPIC]' using web search. Find the latest statistics, expert opinions, and real-world examples. Then write a 2,000-word blog post that's informative, well-structured, and includes citations."</blockquote>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Development Jobs (15–60 min)</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="content-block">
+            <h4>Add a New Feature</h4>
+            <blockquote>"Add a dark mode feature to the web UI. Requirements: toggle switch in top nav, CSS custom properties for all colors, localStorage preference, system preference default, smooth transition animation."</blockquote>
+            <h4>Build a REST API</h4>
+            <blockquote>"Create a REST API for managing a todo list: Express.js server, SQLite database, CRUD endpoints, input validation, error handling with proper HTTP status codes, Postman collection, and usage documentation."</blockquote>
+            <h4>Add Testing</h4>
+            <blockquote>"Add a comprehensive test suite: Jest framework, unit tests for every utility function, integration tests for API endpoints, &gt;80% code coverage, test script in package.json, GitHub Actions workflow for PRs."</blockquote>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Multi-Agent Cluster Projects</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="content-block">
+            <h4>Development Team Cluster</h4>
+            <p>Create a cluster with four roles:</p>
+            <ul>
+              <li><strong>CTO</strong> — Reviews requirements, creates technical plans, assigns work</li>
+              <li><strong>Security Expert</strong> — Reviews plans for vulnerabilities, data exposure, injection attacks</li>
+              <li><strong>UI/UX Designer</strong> — Reviews for usability, accessibility, responsive design</li>
+              <li><strong>Developer</strong> — Writes clean, tested, well-documented code</li>
+            </ul>
+            <h4>Content Pipeline Cluster</h4>
+            <ul>
+              <li><strong>Researcher</strong> — Researches topics, writes structured briefs</li>
+              <li><strong>Writer</strong> — Turns research briefs into polished articles (triggered by file watch on <code>workspace/research/</code>)</li>
+              <li><strong>Editor</strong> — Edits for clarity, grammar, SEO optimization (triggered by file watch on <code>workspace/drafts/</code>)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Prompt Writing Tips</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="content-block">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th style="width:40%">Don't</th><th>Do</th></tr></thead>
+                <tbody>
+                  <tr><td>"Write some docs"</td><td>"Write API documentation to docs/API.md. For each endpoint, include: HTTP method, URL path, request body schema, curl example."</td></tr>
+                  <tr><td>"Update the config"</td><td>"Update config/CRONS.json to add a new daily job that runs at 9am"</td></tr>
+                  <tr><td>"Add tests"</td><td>"Add Jest unit tests achieving >80% coverage. Mock external API calls. Test success and error paths."</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="callout callout-tip">
+              <span class="callout-icon">💡</span>
+              <p><strong>Chain jobs for complex work.</strong> Instead of one massive prompt, break into steps: (1) schema & migrations, (2) API endpoints, (3) frontend, (4) tests & docs.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    `
+  },
+  {
+    id: "config-reference",
+    num: "13",
+    title: "Configuration Reference",
+    desc: "Environment variables, secrets, and behavior files",
+    content: `
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Environment Variables (.env)</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Variable</th><th>Purpose</th><th>Required</th></tr></thead>
+              <tbody>
+                <tr><td><code>APP_URL</code></td><td>Public URL</td><td>Yes</td></tr>
+                <tr><td><code>AUTH_SECRET</code></td><td>Session encryption key (auto-generated)</td><td>Yes</td></tr>
+                <tr><td><code>GH_TOKEN</code></td><td>GitHub PAT (needs repo + workflow scopes)</td><td>Yes</td></tr>
+                <tr><td><code>GH_OWNER</code></td><td>GitHub username</td><td>Yes</td></tr>
+                <tr><td><code>GH_REPO</code></td><td>Repository name</td><td>Yes</td></tr>
+                <tr><td><code>ANTHROPIC_API_KEY</code></td><td>Claude API key</td><td>For anthropic provider</td></tr>
+                <tr><td><code>TELEGRAM_BOT_TOKEN</code></td><td>From @BotFather</td><td>For Telegram</td></tr>
+                <tr><td><code>CLAUDE_CODE_OAUTH_TOKEN</code></td><td>Claude subscription OAuth token</td><td>For clusters + code workspace</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>GitHub Repository Secrets</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="content-block">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Secret</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td><code>AGENT_GH_TOKEN</code></td><td>Git operations inside Docker</td></tr>
+                  <tr><td><code>AGENT_ANTHROPIC_API_KEY</code></td><td>LLM API calls inside Docker</td></tr>
+                  <tr><td><code>AGENT_LLM_BRAVE_API_KEY</code></td><td>Brave Search skill</td></tr>
+                  <tr><td><code>AGENT_LLM_*</code></td><td>Any credential the agent needs</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="callout callout-info">
+              <span class="callout-icon">🔐</span>
+              <p><strong>Naming convention:</strong> <code>AGENT_</code> prefix = hidden from LLM (infrastructure credentials). <code>AGENT_LLM_</code> prefix = visible to LLM (skill API keys).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Personality & Behavior Files</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>File</th><th>Controls</th><th>Edit When...</th></tr></thead>
+              <tbody>
+                <tr><td><code>SOUL.md</code></td><td>Agent personality, identity, tone</td><td>You want to change how the agent speaks</td></tr>
+                <tr><td><code>JOB_PLANNING.md</code></td><td>How the chat LLM plans tasks</td><td>You want different planning conversation style</td></tr>
+                <tr><td><code>JOB_AGENT.md</code></td><td>Docker agent's system prompt</td><td>You want different instructions for jobs</td></tr>
+                <tr><td><code>JOB_SUMMARY.md</code></td><td>Notification formatting</td><td>You want different summary formats</td></tr>
+                <tr><td><code>HEARTBEAT.md</code></td><td>Heartbeat cron behavior</td><td>You want to change periodic self-checks</td></tr>
+                <tr><td><code>CLUSTER_SYSTEM_PROMPT.md</code></td><td>Shared mission for cluster workers</td><td>You're setting up clusters</td></tr>
+                <tr><td><code>SKILL_BUILDING_GUIDE.md</code></td><td>How agent builds new skills</td><td>You want different skill structure</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    `
+  },
+  {
+    id: "comparison",
+    num: "14",
+    title: "PopeBot vs. VibeOS",
+    desc: "When to use which tool — and how they complement each other",
+    content: `
+      <div class="content-block">
+        <p>These are fundamentally different tools that complement each other.</p>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Core Difference</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="comparison-grid">
+            <div class="comparison-col col-pope">
+              <h4><span style="color:var(--burnt-orange)">●</span> PopeBot</h4>
+              <ul>
+                <li>Autonomous AI agent platform</li>
+                <li>Runs in Docker on GitHub Actions (cloud)</li>
+                <li>Fully autonomous — fire and forget</li>
+                <li>Web UI + Telegram + API interface</li>
+                <li>Cost: Actions minutes + LLM API</li>
+              </ul>
+            </div>
+            <div class="comparison-col col-vibe">
+              <h4><span style="color:var(--forest-green)">●</span> VibeOS</h4>
+              <ul>
+                <li>AI-assisted development framework</li>
+                <li>Runs locally in Claude Code CLI</li>
+                <li>Collaborative — you approve each step</li>
+                <li>Terminal interface</li>
+                <li>Cost: Anthropic subscription</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>When to Use Each</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="comparison-grid">
+            <div class="comparison-col col-pope">
+              <h4><span style="color:var(--burnt-orange)">●</span> Use PopeBot When</h4>
+              <ul>
+                <li>You want to fire off a task and walk away</li>
+                <li>You need 24/7 scheduled automation</li>
+                <li>You want multiple agents in parallel</li>
+                <li>You're on mobile and want to kick off work</li>
+                <li>The task is well-defined</li>
+                <li>You want event-driven reactions (webhooks)</li>
+              </ul>
+            </div>
+            <div class="comparison-col col-vibe">
+              <h4><span style="color:var(--forest-green)">●</span> Use VibeOS When</h4>
+              <ul>
+                <li>You're actively building with tight control</li>
+                <li>Quality is paramount (TDD, audits)</li>
+                <li>Complex architectural decisions needed</li>
+                <li>You're refactoring deeply</li>
+                <li>You want structured project management</li>
+                <li>Critical fixes needing careful repair</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Using Them Together (Most Powerful)</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="lifecycle">
+            <div class="lifecycle-step"><div class="lifecycle-num">1</div><div class="lifecycle-content"><h4>VibeOS for Design</h4><p>Use <code>/vibeos:discover</code> and <code>/vibeos:plan</code> to define requirements and architecture</p></div></div>
+            <div class="lifecycle-step"><div class="lifecycle-num">2</div><div class="lifecycle-content"><h4>PopeBot for Execution</h4><p>Send the planned work to PopeBot agents to implement</p></div></div>
+            <div class="lifecycle-step"><div class="lifecycle-num">3</div><div class="lifecycle-content"><h4>VibeOS for Review</h4><p>Use <code>/vibeos:audit</code> to review PopeBot's output</p></div></div>
+            <div class="lifecycle-step"><div class="lifecycle-num">4</div><div class="lifecycle-content"><h4>PopeBot for Maintenance</h4><p>Set up crons for ongoing monitoring, dependency updates, and health checks</p></div></div>
+            <div class="lifecycle-step"><div class="lifecycle-num">5</div><div class="lifecycle-content"><h4>PopeBot Clusters for Features</h4><p>CTO plans, Security reviews, Developer implements</p></div></div>
+          </div>
+        </div>
+      </div>
+    `
+  },
+  {
+    id: "troubleshooting",
+    num: "15",
+    title: "Troubleshooting",
+    desc: "Common issues and how to fix them",
+    content: `
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>PopeBot Won't Start</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <pre><span class="comment"># Check if port 3000 is in use</span>
+<span class="keyword">lsof</span> -i:3000
+
+<span class="comment"># Kill whatever's using it</span>
+<span class="keyword">lsof</span> -ti:3000 | <span class="keyword">xargs</span> kill -9
+
+<span class="comment"># Check dev server logs</span>
+<span class="keyword">cat</span> /tmp/popebot-dev.log</pre>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Tunnel Not Working</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <pre><span class="comment"># Check tunnel status</span>
+<span class="keyword">pgrep</span> -f cloudflared && <span class="keyword">echo</span> <span class="string">"Running"</span> || <span class="keyword">echo</span> <span class="string">"Not running"</span>
+
+<span class="comment"># Restart tunnel</span>
+<span class="keyword">pkill</span> -f cloudflared
+<span class="keyword">cloudflared</span> tunnel run popebot > /tmp/cloudflared.log 2>&1 &
+
+<span class="comment"># Test connectivity</span>
+<span class="keyword">curl</span> -s https://bot.fullrefit.net/api/ping</pre>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Telegram Bot Not Responding</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <pre><span class="comment"># Check webhook status</span>
+<span class="keyword">curl</span> -s <span class="string">"https://api.telegram.org/bot&lt;TOKEN&gt;/getWebhookInfo"</span> | python3 -m json.tool
+
+<span class="comment"># Re-register webhook</span>
+<span class="keyword">curl</span> <span class="string">"https://api.telegram.org/bot&lt;TOKEN&gt;/setWebhook"</span> \\
+  -d <span class="string">"url=https://bot.fullrefit.net/api/telegram/webhook"</span> \\
+  -d <span class="string">"secret_token=YOUR_SECRET"</span></pre>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Jobs Not Running</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <pre><span class="comment"># Check GitHub Actions</span>
+<span class="keyword">gh</span> run list --repo fullREFIT/popebot --limit 5
+
+<span class="comment"># Check if workflows are enabled</span>
+<span class="keyword">gh</span> workflow list --repo fullREFIT/popebot
+
+<span class="comment"># Check if secrets are set</span>
+<span class="keyword">gh</span> secret list --repo fullREFIT/popebot</pre>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <p><strong>Common causes of job failure:</strong> Missing <code>AGENT_GH_TOKEN</code> or <code>AGENT_ANTHROPIC_API_KEY</code> secrets, expired/rate-limited API key, or job task too vague for the agent to execute.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection" data-sub>
+        <div class="subsection-header" onclick="toggleSub(this)">
+          <h3>Reset Everything</h3>
+          <svg class="subsection-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="subsection-body">
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <p><strong>Warning:</strong> This resets the database. You'll need to create a new admin account.</p>
+          </div>
+          <pre><span class="keyword">cd</span> /Users/paul/dev-4/pope-bot/popebot-fresh
+<span class="keyword">./stop.sh</span>
+<span class="keyword">rm</span> -rf data/
+<span class="keyword">./start.sh</span></pre>
+        </div>
+      </div>
+    `
+  }
+];
+
+// ── RENDER ──
+const navList = document.getElementById('navList');
+const contentArea = document.getElementById('contentArea');
+let activeSection = sections[0].id;
+
+function renderNav() {
+  navList.innerHTML = sections.map(s => 
+    '<a class="nav-item' + (s.id === activeSection ? ' active' : '') + '" data-id="' + s.id + '" href="#" onclick="navTo(\'' + s.id + '\');return false;">' +
+    '<span class="nav-num">' + s.num + '</span>' + s.title + '</a>'
+  ).join('');
+}
+
+function renderContent() {
+  contentArea.innerHTML = sections.map(s =>
+    '<section class="section' + (s.id === activeSection ? ' active' : '') + '" id="section-' + s.id + '">' +
+    '<h2 class="section-title">' + s.title + '</h2>' +
+    '<p class="section-desc">' + s.desc + '</p>' +
+    s.content +
+    '</section>'
+  ).join('');
+}
+
+function navTo(id) {
+  activeSection = id;
+  renderNav();
+  renderContent();
+  window.scrollTo({top: document.querySelector('.hero').offsetHeight + 64, behavior: 'smooth'});
+  // Close mobile sidebar
+  document.getElementById('sidebar').classList.remove('open');
+  document.querySelector('.sidebar-overlay').classList.remove('active');
+}
+
+function toggleSub(header) {
+  const sub = header.parentElement;
+  const wasOpen = sub.classList.contains('open');
+  // Single-open accordion within section
+  sub.parentElement.querySelectorAll('.subsection.open').forEach(s => s.classList.remove('open'));
+  if (!wasOpen) sub.classList.add('open');
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.sidebar-overlay').classList.toggle('active');
+}
+
+function filterNav(query) {
+  const q = query.toLowerCase();
+  document.querySelectorAll('.nav-item').forEach(item => {
+    const match = item.textContent.toLowerCase().includes(q);
+    item.style.display = match ? '' : 'none';
+  });
+}
+
+// Scroll to top button
+window.addEventListener('scroll', () => {
+  document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 400);
+});
+
+// Keyboard nav
+document.addEventListener('keydown', e => {
+  if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+    e.preventDefault();
+    document.getElementById('searchInput').focus();
+  }
+  if (e.key === 'Escape') {
+    document.getElementById('searchInput').blur();
+    document.getElementById('sidebar').classList.remove('open');
+    document.querySelector('.sidebar-overlay').classList.remove('active');
+  }
+});
+
+// Init
+renderNav();
+renderContent();
+</script>
+</body>
+</html>
