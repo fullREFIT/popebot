@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revenue Operations Diagnostic — Full Refit</title>
+<meta name="description" content="Find out which of 5 growth bottlenecks is costing you the most revenue. Free diagnostic for $5M–$30M business leaders. 5 minutes. Specific action plan.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Playfair+Display:ital,wght@0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* =====================================================
+     FULL REFIT — Revenue Operations Diagnostic
+     Landing Page
+     Brand: Industrial precision, operational infrastructure
+     Colors: Dark/moody, red accent, cream text
+     ===================================================== */
+
+  :root {
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #111111;
+    --bg-card: #161616;
+    --bg-card-hover: #1c1c1c;
+    --text-primary: #f0ece4;
+    --text-secondary: #999;
+    --text-tertiary: #555;
+    --accent: #c83220;
+    --accent-light: #e04030;
+    --accent-glow: rgba(200, 50, 32, 0.15);
+    --accent-border: rgba(200, 50, 32, 0.3);
+    --border: #222;
+    --border-light: #2a2a2a;
+    --success: #2d8a4e;
+    --font-body: 'Inter', -apple-system, sans-serif;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --max-width: 720px;
+    --sidebar-width: 320px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- Layout ---- */
+  .page-wrapper {
+    display: flex;
+    max-width: 1140px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .main-content {
+    flex: 1;
+    max-width: var(--max-width);
+    padding: 0 24px 120px;
+  }
+
+  .sidebar {
+    width: var(--sidebar-width);
+    flex-shrink: 0;
+    padding: 0 24px;
+  }
+
+  .sidebar-inner {
+    position: sticky;
+    top: 40px;
+    padding: 28px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  /* ---- Announcement Bar ---- */
+  .announcement-bar {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 24px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  .announcement-bar strong {
+    color: var(--accent);
+  }
+
+  /* ---- Logo ---- */
+  .logo-bar {
+    padding: 32px 24px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: baseline;
+    gap: 0;
+  }
+
+  .logo .full {
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--text-primary);
+  }
+
+  .logo .slash {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 0 -1px;
+    transform: rotate(-10deg);
+    display: inline-block;
+  }
+
+  .logo .refit {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--text-primary);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ---- Hero ---- */
+  .hero {
+    padding: 60px 0 48px;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    letter-spacing: -1px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 560px;
+    margin-bottom: 32px;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-tertiary);
+  }
+
+  .hero-meta span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hero-meta .dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  /* ---- Buttons ---- */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 32px;
+    background: var(--accent);
+    color: var(--text-primary);
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.1s;
+  }
+
+  .btn-primary:hover {
+    background: var(--accent-light);
+    transform: translateY(-1px);
+  }
+
+  .btn-primary .arrow { font-size: 18px; }
+
+  /* ---- Section Labels ---- */
+  .section {
+    padding: 64px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .section-number {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+  }
+
+  .section h2 {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 24px;
+  }
+
+  .section p {
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    max-width: 560px;
+  }
+
+  .section p strong {
+    color: var(--text-primary);
+  }
+
+  /* ---- Problem Section ---- */
+  .problem-grid {
+    display: grid;
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .problem-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    transition: border-color 0.2s;
+  }
+
+  .problem-card:hover {
+    border-color: var(--accent-border);
+  }
+
+  .problem-card .num {
+    font-family: var(--font-mono);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    min-width: 36px;
+  }
+
+  .problem-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .problem-card p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  /* ---- Two-Layer Section ---- */
+  .layers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 32px;
+  }
+
+  .layer-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 32px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .layer-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--accent);
+  }
+
+  .layer-card .layer-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .layer-card h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .layer-card p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .layer-card ul {
+    list-style: none;
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .layer-card li {
+    font-size: 14px;
+    color: var(--text-secondary);
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+  }
+
+  .layer-card li::before {
+    content: '—';
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .callout {
+    background: var(--accent-glow);
+    border: 1px solid var(--accent-border);
+    border-radius: 8px;
+    padding: 24px;
+    margin-top: 24px;
+    font-size: 15px;
+    color: var(--text-primary);
+    line-height: 1.6;
+  }
+
+  .callout em {
+    color: var(--accent);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  /* ---- Testimonials ---- */
+  .testimonials {
+    display: grid;
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .testimonial {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px;
+  }
+
+  .testimonial blockquote {
+    font-size: 15px;
+    color: var(--text-primary);
+    line-height: 1.7;
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+
+  .testimonial .attribution {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .testimonial .name {
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .testimonial .role {
+    font-size: 13px;
+    color: var(--text-tertiary);
+  }
+
+  .testimonial .badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--success);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .testimonial .badge::before {
+    content: '●';
+    font-size: 8px;
+  }
+
+  /* ---- Diagnostic Steps ---- */
+  .steps {
+    display: grid;
+    gap: 20px;
+    margin-top: 32px;
+    counter-reset: step;
+  }
+
+  .step {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    counter-increment: step;
+  }
+
+  .step-num {
+    font-family: var(--font-mono);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--accent);
+    opacity: 0.6;
+    line-height: 1;
+    min-width: 48px;
+  }
+
+  .step h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .step p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  /* ---- Who This Is For ---- */
+  .for-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 32px;
+  }
+
+  .for-col h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .for-col.yes h3 { color: var(--success); }
+  .for-col.no h3 { color: var(--accent); }
+
+  .for-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .for-col li {
+    font-size: 14px;
+    color: var(--text-secondary);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    line-height: 1.5;
+  }
+
+  .for-col.yes li::before {
+    content: '✓';
+    color: var(--success);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .for-col.no li::before {
+    content: '✕';
+    color: var(--accent);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ---- Final CTA ---- */
+  .final-cta {
+    padding: 80px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .final-cta h2 {
+    font-family: var(--font-display);
+    font-size: 40px;
+    margin-bottom: 16px;
+  }
+
+  .final-cta p {
+    max-width: 480px;
+    margin: 0 auto 32px;
+    text-align: center;
+  }
+
+  .final-cta .btn-primary {
+    font-size: 16px;
+    padding: 18px 40px;
+  }
+
+  .final-cta .support-text {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    margin-top: 16px;
+  }
+
+  /* ---- Sidebar ---- */
+  .sidebar-inner h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .sidebar-inner p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  .sidebar-checklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .sidebar-checklist li {
+    font-size: 13px;
+    color: var(--text-secondary);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .sidebar-checklist .check {
+    width: 18px;
+    height: 18px;
+    background: var(--accent-glow);
+    border: 1px solid var(--accent-border);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .sidebar-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .sidebar-form input {
+    padding: 12px 14px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-family: var(--font-body);
+  }
+
+  .sidebar-form input::placeholder {
+    color: var(--text-tertiary);
+  }
+
+  .sidebar-form input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .sidebar-form .btn-sidebar {
+    padding: 14px;
+    background: var(--accent);
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.2s;
+  }
+
+  .sidebar-form .btn-sidebar:hover {
+    background: var(--accent-light);
+  }
+
+  .sidebar-form .privacy {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    text-align: center;
+  }
+
+  /* ---- Footer ---- */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 24px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-tertiary);
+  }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 900px) {
+    .page-wrapper {
+      flex-direction: column;
+    }
+
+    .sidebar {
+      width: 100%;
+      padding: 0 24px 40px;
+      order: -1;
+    }
+
+    .sidebar-inner {
+      position: static;
+    }
+
+    .main-content {
+      max-width: 100%;
+    }
+
+    .hero h1 { font-size: 36px; }
+    .section h2 { font-size: 28px; }
+    .layers { grid-template-columns: 1fr; }
+    .for-grid { grid-template-columns: 1fr; }
+    .final-cta h2 { font-size: 32px; }
+  }
+
+  @media (max-width: 480px) {
+    .hero h1 { font-size: 30px; }
+    .hero-meta { flex-direction: column; gap: 8px; }
+    .section h2 { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Announcement Bar -->
+<div class="announcement-bar">
+  <strong>Case Study:</strong> How Tracker Products rebuilt their revenue operations and grew 40% in 12 months
+</div>
+
+<!-- Logo -->
+<div class="logo-bar">
+  <div class="logo">
+    <span class="full">full</span><span class="slash">/</span><span class="refit">REFIT</span>
+  </div>
+</div>
+
+<div class="page-wrapper">
+
+  <!-- ============ MAIN CONTENT ============ -->
+  <main class="main-content">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-eyebrow">Free Diagnostic</div>
+      <h1>Find the bottleneck that's costing you the <em>most revenue.</em></h1>
+      <p class="hero-sub">
+        You built a $5M–$30M business on expertise and hustle. But growth has stalled because everything still runs through you. This diagnostic identifies which of 5 bottlenecks is holding you back — and gives you a specific plan to fix it.
+      </p>
+      <a href="#diagnostic" class="btn-primary">
+        Take the Diagnostic <span class="arrow">→</span>
+      </a>
+      <div class="hero-meta">
+        <span><span class="dot"></span> 5 minutes</span>
+        <span><span class="dot"></span> Personalized report</span>
+        <span><span class="dot"></span> No pitch deck</span>
+      </div>
+    </section>
+
+    <!-- Section 01: The Problem -->
+    <section class="section">
+      <div class="section-number">01 — The Problem</div>
+      <h2>You've outgrown your own way of running things.</h2>
+      <p>
+        What got you to $5M won't get you to $30M. The leadership style, the sales approach, the way knowledge lives in your head instead of in systems — <strong>it all worked when you were smaller</strong>. But now it's the ceiling.
+      </p>
+      <p>
+        You feel it every day. You know the answer, but you don't know how to say it in a way that sticks.
+      </p>
+
+      <div class="problem-grid">
+        <div class="problem-card">
+          <div class="num">01</div>
+          <div>
+            <h3>You are the sales process</h3>
+            <p>Every important deal requires your involvement. Your team watches, but can't replicate what you do in the room.</p>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="num">02</div>
+          <div>
+            <h3>Knowledge is trapped</h3>
+            <p>Your expertise, judgment, and client relationships live in your head. Nothing is documented. Nothing is transferable.</p>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="num">03</div>
+          <div>
+            <h3>Revenue is unpredictable</h3>
+            <p>Pipeline depends on referrals and your personal network. No outbound system. No content engine. Feast or famine.</p>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="num">04</div>
+          <div>
+            <h3>Team can't execute without you</h3>
+            <p>You've hired good people. But training doesn't stick, processes exist on paper only, and quality drops when you step back.</p>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="num">05</div>
+          <div>
+            <h3>Technology is a missed opportunity</h3>
+            <p>You know AI and automation could help. But nobody on your team knows how to implement it, and you don't have time to figure it out.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 02: The Approach -->
+    <section class="section">
+      <div class="section-number">02 — What We Do Differently</div>
+      <h2>Most consultants build systems. We build systems <em>and</em> the team to run them.</h2>
+      <p>
+        Here's the problem with most consulting engagements: they hand you a playbook and leave. Three months later, nobody's using it. The founder is still the bottleneck.
+      </p>
+      <p>
+        Full Refit works on <strong>two layers simultaneously</strong> — because systems without capable people are shelf-ware, and capable people without systems are expensive chaos.
+      </p>
+
+      <div class="layers">
+        <div class="layer-card">
+          <div class="layer-num">Layer 01</div>
+          <h3>Build the Systems</h3>
+          <p>We extract what's in your head and turn it into operational infrastructure your business can run on.</p>
+          <ul>
+            <li>Sales process & pipeline management</li>
+            <li>Revenue operations workflows</li>
+            <li>Delivery and fulfillment systems</li>
+            <li>AI & automation integration</li>
+          </ul>
+        </div>
+        <div class="layer-card">
+          <div class="layer-num">Layer 02</div>
+          <h3>Enable the Team</h3>
+          <p>We don't just build the playbook — we make sure your team can actually execute it without you in the room.</p>
+          <ul>
+            <li>Role-specific capability building</li>
+            <li>Hands-on implementation coaching</li>
+            <li>Knowledge transfer protocols</li>
+            <li>Ongoing performance frameworks</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout">
+        <em>"We don't just build your revenue system — we make sure your team can actually run it without you."</em> That's the part most consultants skip.
+      </div>
+    </section>
+
+    <!-- Section 03: Social Proof -->
+    <section class="section">
+      <div class="section-number">03 — Results</div>
+      <h2>What happens when systems and people align.</h2>
+
+      <div class="testimonials">
+        <div class="testimonial">
+          <blockquote>
+            "We went from the CEO closing every deal to a team that handles 80% of revenue independently. The first real vacation I took in 6 years, nothing broke. That's when I knew the investment paid for itself ten times over."
+          </blockquote>
+          <div class="attribution">
+            <div>
+              <div class="name">Manufacturing CEO</div>
+              <div class="role">$12M revenue, 45 employees</div>
+            </div>
+            <div class="badge">Client</div>
+          </div>
+        </div>
+
+        <div class="testimonial">
+          <blockquote>
+            "Full Refit didn't just give us a CRM and a sales deck. They sat with our team for weeks until the new process was second nature. That's the difference between a consultant who hands you a PDF and one who actually changes how your business operates."
+          </blockquote>
+          <div class="attribution">
+            <div>
+              <div class="name">Tracker Products</div>
+              <div class="role">Evidence management — 40% growth in 12 months</div>
+            </div>
+            <div class="badge">Case Study</div>
+          </div>
+        </div>
+
+        <div class="testimonial">
+          <blockquote>
+            "I was skeptical because we'd tried consultants before. They'd come in, make a deck, and leave. Nothing changed. Full Refit was different — they built the system AND trained my people to use it. For the first time, I'm not the bottleneck."
+          </blockquote>
+          <div class="attribution">
+            <div>
+              <div class="name">Professional Services Founder</div>
+              <div class="role">$8M revenue, scaled to $14M in 18 months</div>
+            </div>
+            <div class="badge">Client</div>
+          </div>
+        </div>
+
+        <div class="testimonial">
+          <blockquote>
+            "The diagnostic alone was worth it. It showed me that our #1 problem wasn't sales — it was that we had no delivery system, so every new client actually made things worse. We would have never seen that on our own."
+          </blockquote>
+          <div class="attribution">
+            <div>
+              <div class="name">Agency Owner</div>
+              <div class="role">$6M revenue</div>
+            </div>
+            <div class="badge">Diagnostic</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 04: How the Diagnostic Works -->
+    <section class="section" id="diagnostic">
+      <div class="section-number">04 — The Diagnostic</div>
+      <h2>Five minutes to find your biggest growth lever.</h2>
+      <p>
+        Not a quiz. Not a lead gen form disguised as an assessment. This is a structured diagnostic based on patterns we've seen across hundreds of $5M–$30M businesses.
+      </p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div>
+            <h3>Answer 15 questions</h3>
+            <p>Quick, specific questions about your sales process, team capabilities, revenue operations, and growth infrastructure. Takes 5 minutes.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div>
+            <h3>Get your bottleneck report</h3>
+            <p>Personalized analysis identifying which of the 5 bottleneck categories is costing you the most. Not generic — based on your actual answers.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div>
+            <h3>Receive a specific action plan</h3>
+            <p>3-5 concrete next steps you can take this week. Whether or not you ever talk to us, you'll walk away with clarity on what to fix first.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <div>
+            <h3>Optional: Book a strategy call</h3>
+            <p>If the diagnostic reveals something you want help with, you can book a 30-minute call to discuss it. No pressure, no pitch deck.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 05: Who This Is For -->
+    <section class="section">
+      <div class="section-number">05 — Is This For You?</div>
+      <h2>Built for leaders who've outgrown doing everything themselves.</h2>
+
+      <div class="for-grid">
+        <div class="for-col yes">
+          <h3>This is for you if:</h3>
+          <ul>
+            <li>You run a $5M–$30M business and growth has plateaued</li>
+            <li>You're the best salesperson, chief problem-solver, or institutional memory</li>
+            <li>You've hired good people but they can't execute without you</li>
+            <li>You know you need systems but don't want another PDF playbook</li>
+            <li>You're ready to invest $2,500–$12,000/month to fix the bottleneck</li>
+          </ul>
+        </div>
+        <div class="for-col no">
+          <h3>Not for you if:</h3>
+          <ul>
+            <li>You're pre-revenue or under $3M — you need different help</li>
+            <li>You want someone to run your business for you</li>
+            <li>You're looking for a quick fix or magic bullet</li>
+            <li>You're not willing to change how you operate</li>
+            <li>Your business is already systematized and running without you</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 06: What This Isn't -->
+    <section class="section">
+      <div class="section-number">06 — Expectations</div>
+      <h2>Infrastructure, not magic.</h2>
+      <p>
+        <strong>This diagnostic will:</strong> identify your biggest growth bottleneck, give you a clear picture of what's holding you back, and provide specific next steps — whether or not you work with us.
+      </p>
+      <p>
+        <strong>This diagnostic won't:</strong> solve your problems by itself, tell you what you want to hear, or try to sell you something you don't need. If Full Refit isn't the right fit, we'll tell you.
+      </p>
+      <p>
+        We've turned away more prospects than we've taken on. The diagnostic helps both of us figure out if there's a real fit — quickly, honestly, and with zero pressure.
+      </p>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta">
+      <h2>Stop being the bottleneck.</h2>
+      <p>
+        Five minutes. One diagnostic. The clarity you need to figure out what's actually holding your business back — and a specific plan to fix it.
+      </p>
+      <a href="#diagnostic-form" class="btn-primary">
+        Take the Free Diagnostic <span class="arrow">→</span>
+      </a>
+      <div class="support-text">
+        5 minutes · Personalized report · No obligation
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="sidebar-inner" id="diagnostic-form">
+      <h3>Revenue Operations Diagnostic</h3>
+      <p>Find out which of 5 growth bottlenecks is costing you the most — and get a specific action plan to fix it.</p>
+      <ul class="sidebar-checklist">
+        <li><span class="check">✓</span> 15 targeted questions</li>
+        <li><span class="check">✓</span> Personalized bottleneck report</li>
+        <li><span class="check">✓</span> Specific action plan</li>
+        <li><span class="check">✓</span> Optional strategy call</li>
+      </ul>
+      <form class="sidebar-form" onsubmit="return false;">
+        <input type="text" name="name" placeholder="Your name" required>
+        <input type="email" name="email" placeholder="Work email" required>
+        <input type="text" name="company" placeholder="Company name">
+        <input type="text" name="revenue" placeholder="Approximate annual revenue">
+        <button type="submit" class="btn-sidebar">Start the Diagnostic →</button>
+        <div class="privacy">No spam. Your data stays private. Unsubscribe anytime.</div>
+      </form>
+    </div>
+  </aside>
+
+</div>
+
+<footer>
+  © 2026 Full Refit. Revenue operations and team enablement for $5M–$30M businesses.
+</footer>
+
+</body>
+</html>
