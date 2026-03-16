@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Full Refit — Instagram Ad Creative Mockup</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #1a1a1a;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+  }
+
+  .container {
+    display: flex;
+    gap: 60px;
+    max-width: 1200px;
+    align-items: flex-start;
+  }
+
+  h2.section-label {
+    color: #999;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+
+  /* Instagram Frame */
+  .phone-frame {
+    width: 375px;
+    min-width: 375px;
+    background: #000;
+    border-radius: 40px;
+    padding: 12px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  .phone-screen {
+    background: #0a0a0a;
+    border-radius: 30px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .ad-creative {
+    width: 100%;
+    aspect-ratio: 9/16;
+    background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 60px 28px 40px;
+    overflow: hidden;
+  }
+
+  /* Background texture */
+  .ad-creative::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: 
+      radial-gradient(ellipse at 20% 80%, rgba(200, 50, 30, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(255, 255, 255, 0.03) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .ad-top {
+    position: relative;
+    z-index: 1;
+  }
+
+  .ad-logo {
+    display: flex;
+    align-items: baseline;
+    gap: 0;
+    margin-bottom: 40px;
+  }
+
+  .ad-logo .full {
+    font-size: 28px;
+    font-weight: 400;
+    color: #f0ece4;
+    letter-spacing: -0.5px;
+  }
+
+  .ad-logo .slash {
+    font-size: 32px;
+    font-weight: 700;
+    color: #c83220;
+    margin: 0 -1px;
+    transform: rotate(-10deg);
+    display: inline-block;
+  }
+
+  .ad-logo .refit {
+    font-size: 28px;
+    font-weight: 900;
+    color: #f0ece4;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .ad-hook {
+    font-size: 32px;
+    font-weight: 900;
+    color: #f0ece4;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+  }
+
+  .ad-hook .highlight {
+    color: #c83220;
+  }
+
+  .ad-subtext {
+    font-size: 16px;
+    color: #888;
+    line-height: 1.6;
+    max-width: 280px;
+  }
+
+  .ad-middle {
+    position: relative;
+    z-index: 1;
+  }
+
+  .pain-points {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .pain-points li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14px;
+    color: #ccc;
+    line-height: 1.5;
+  }
+
+  .pain-points .icon {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    background: rgba(200, 50, 32, 0.15);
+    border: 1px solid rgba(200, 50, 32, 0.4);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: #c83220;
+    margin-top: 2px;
+  }
+
+  .divider {
+    width: 40px;
+    height: 2px;
+    background: #c83220;
+    margin: 24px 0;
+  }
+
+  .ad-bottom {
+    position: relative;
+    z-index: 1;
+  }
+
+  .ad-cta-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #666;
+    margin-bottom: 12px;
+  }
+
+  .ad-cta {
+    font-size: 20px;
+    font-weight: 700;
+    color: #f0ece4;
+    margin-bottom: 6px;
+  }
+
+  .ad-cta-sub {
+    font-size: 13px;
+    color: #666;
+  }
+
+  .ad-cta-button {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 14px 32px;
+    background: #c83220;
+    color: #f0ece4;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-radius: 4px;
+  }
+
+  /* Caption Panel */
+  .caption-panel {
+    flex: 1;
+    max-width: 480px;
+  }
+
+  .caption-card {
+    background: #0d0d0d;
+    border: 1px solid #222;
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 24px;
+  }
+
+  .caption-card h3 {
+    color: #f0ece4;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .caption-card p {
+    color: #999;
+    font-size: 14px;
+    line-height: 1.8;
+    white-space: pre-line;
+  }
+
+  .caption-card .hashtags {
+    color: #555;
+    font-size: 12px;
+    margin-top: 12px;
+  }
+
+  .notes {
+    color: #666;
+    font-size: 12px;
+    line-height: 1.8;
+  }
+
+  .notes strong {
+    color: #999;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+      align-items: center;
+    }
+    .phone-frame {
+      min-width: auto;
+      width: 100%;
+      max-width: 375px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Phone Mock -->
+  <div>
+    <h2 class="section-label">Ad Creative — Static Image (1080×1920)</h2>
+    <div class="phone-frame">
+      <div class="phone-screen">
+        <div class="ad-creative">
+
+          <div class="ad-top">
+            <div class="ad-logo">
+              <span class="full">full</span><span class="slash">/</span><span class="refit">REFIT</span>
+            </div>
+            <div class="ad-hook">
+              Your best salesperson is you.<br>
+              <span class="highlight">That's the problem.</span>
+            </div>
+            <div class="ad-subtext">
+              You built a $5M–$30M company on hustle and expertise. But you can't scale what lives only in your head.
+            </div>
+          </div>
+
+          <div class="ad-middle">
+            <div class="divider"></div>
+            <ul class="pain-points">
+              <li><span class="icon">✕</span> Every deal still runs through you</li>
+              <li><span class="icon">✕</span> Team can't close without you in the room</li>
+              <li><span class="icon">✕</span> Things fall apart when you step away</li>
+              <li><span class="icon">✕</span> You've outgrown your own way of running things</li>
+            </ul>
+          </div>
+
+          <div class="ad-bottom">
+            <div class="ad-cta-label">Free Diagnostic</div>
+            <div class="ad-cta">Find your #1 growth bottleneck</div>
+            <div class="ad-cta-sub">5 minutes → Specific action plan</div>
+            <div class="ad-cta-button">Take the Diagnostic →</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Caption & Notes -->
+  <div class="caption-panel">
+    <h2 class="section-label">Post Caption</h2>
+    <div class="caption-card">
+      <h3>@fullrefit</h3>
+      <p>Sales process. Delivery systems. Team enablement. Revenue operations.
+
+Each one built on what actually works at $5M–$30M, not startup theory.
+
+Free diagnostic. 5 minutes. Specific action plan.
+
+→ Link in bio</p>
+      <p class="hashtags">#businessgrowth #revops #salesprocess #scalingup #operationalexcellence #b2bmarketing #teambuilding #ceo #founderlife</p>
+    </div>
+
+    <h2 class="section-label">Talking Head Script (Primary)</h2>
+    <div class="caption-card">
+      <h3>Hook (0:00–0:05)</h3>
+      <p>"Your best salesperson is you. And that's the problem."</p>
+    </div>
+    <div class="caption-card">
+      <h3>Pain (0:05–0:25)</h3>
+      <p>"You built a business to $5, $10, maybe $20 million. You should be proud of that. But here's what nobody talks about —
+
+Every deal still runs through you. Your team can't close without you in the room. You haven't taken a real vacation in years.
+
+You didn't build a company. You built a job you can't quit."</p>
+    </div>
+    <div class="caption-card">
+      <h3>Reframe (0:25–0:40)</h3>
+      <p>"It's not your team's fault. They're good people. The problem is, everything they need — it's all trapped in your head.
+
+You never had to systematize it because you were always there."</p>
+    </div>
+    <div class="caption-card">
+      <h3>Solution (0:40–0:55)</h3>
+      <p>"That's what we fix. Two things:
+
+First, we extract what's in your head and turn it into actual systems.
+
+Second — the part most consultants skip — we make your team capable of running those systems without you."</p>
+    </div>
+    <div class="caption-card">
+      <h3>CTA (0:55–1:05)</h3>
+      <p>"Free diagnostic. Five minutes. Identifies which of five growth bottlenecks is costing you the most right now.
+
+Link's in the bio."</p>
+    </div>
+
+    <h2 class="section-label">Production Notes</h2>
+    <div class="notes">
+      <strong>Format:</strong> Reel, 60-90 sec, 9:16<br>
+      <strong>Style:</strong> Talking head, lapel mic, professional workspace BG<br>
+      <strong>Tone:</strong> Direct, empathetic, no-BS — not salesy<br>
+      <strong>Presenter:</strong> Business-casual, confident, experienced<br>
+      <strong>Post type:</strong> Both static image (above) + video reel<br>
+      <strong>Budget:</strong> Test at $50-100/day across 3 hook variants
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
